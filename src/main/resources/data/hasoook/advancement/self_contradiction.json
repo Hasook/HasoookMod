@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:adventure/spear_many_mobs",
+  "criteria": {
+    "stone_pickaxe": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "hasoook:slime_spear",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancements.hasoook.self_contradiction.title"
+    },
+    "description": {
+      "translate": "advancements.hasoook.self_contradiction.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "sends_telemetry_event": true
+}

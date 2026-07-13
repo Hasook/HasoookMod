@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "minecraft:phantom_membrane",
+    "L": "minecraft:lantern"
+  },
+  "pattern": [
+    "MMM",
+    "MLM",
+    "MMM"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hasoook:phantom_lamp"
+  }
+}

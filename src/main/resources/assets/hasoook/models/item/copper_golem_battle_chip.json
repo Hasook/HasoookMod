@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hasoook:item/copper_golem_battle_chip"
+  }
+}

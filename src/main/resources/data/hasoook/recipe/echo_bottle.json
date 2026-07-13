@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:glass",
+    "E": "minecraft:echo_shard"
+  },
+  "pattern": [
+    "#E#",
+    " # "
+  ],
+  "result": {
+    "count": 3,
+    "id": "hasoook:echo_bottle"
+  }
+}

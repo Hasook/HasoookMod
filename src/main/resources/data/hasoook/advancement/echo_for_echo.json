@@ -1,0 +1,25 @@
+{
+  "parent": "hasoook:record_button",
+  "criteria": {
+    "firework_special": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "title": {
+      "translate": "advancements.hasoook.echo_for_echo.title"
+    },
+    "description": {
+      "translate": "advancements.hasoook.echo_for_echo.description"
+    },
+    "icon": {
+      "id": "hasoook:sonic_boom_bottle",
+      "count": 1
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "sends_telemetry_event": true
+}

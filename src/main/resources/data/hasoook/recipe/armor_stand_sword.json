@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:armor_stand",
+    "x": "minecraft:stick"
+  },
+  "pattern": [
+    "#",
+    "#",
+    "x"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hasoook:armor_stand_sword"
+  }
+}

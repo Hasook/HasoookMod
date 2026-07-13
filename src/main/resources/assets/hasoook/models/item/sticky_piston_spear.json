@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hasoook:item/sticky_piston_spear"
+  }
+}

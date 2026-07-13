@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "old_head": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:shears",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancements.hasoook.old_head.title"
+    },
+    "description": {
+      "translate": "advancements.hasoook.old_head.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "sends_telemetry_event": true
+}

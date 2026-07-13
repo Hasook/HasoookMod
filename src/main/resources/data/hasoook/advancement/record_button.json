@@ -1,0 +1,25 @@
+{
+  "parent": "adventure/avoid_vibration",
+  "criteria": {
+    "firework_special": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "title": {
+      "translate": "advancements.hasoook.record_button.title"
+    },
+    "description": {
+      "translate": "advancements.hasoook.record_button.description"
+    },
+    "icon": {
+      "id": "hasoook:echo_bottle",
+      "count": 1
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "sends_telemetry_event": true
+}

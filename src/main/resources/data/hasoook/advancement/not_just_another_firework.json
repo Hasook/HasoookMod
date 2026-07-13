@@ -1,0 +1,25 @@
+{
+  "parent": "adventure/spear_many_mobs",
+  "criteria": {
+    "firework_special": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "title": {
+      "translate": "advancements.hasoook.not_just_another_firework.title"
+    },
+    "description": {
+      "translate": "advancements.hasoook.not_just_another_firework.description"
+    },
+    "icon": {
+      "id": "hasoook:firework_rocket_spear",
+      "count": 1
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "sends_telemetry_event": true
+}

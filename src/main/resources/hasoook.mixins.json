@@ -1,0 +1,32 @@
+{
+  "required": true,
+  "package": "com.hasoook.hasoook.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AnvilMenuMixin",
+    "BucketItemMixin",
+    "FireworkRocketEntityMixin",
+    "LivingEntityPushMixin",
+    "SolidBucketItemMixin",
+    "TridentItemMixin",
+    "VibrationListenerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "AbstractZombieRendererMixin",
+    "ClientBundleTooltipMixin",
+    "EntityRenderDispatcherAccessor",
+    "ItemInHandLayerMixin",
+    "ItemModelResolverMixin",
+    "LivingEntityRendererMixin",
+    "LivingEntityRenderStateMixin",
+    "MinecraftMixin",
+    "ModelFeatureRendererMixin",
+    "PlayerModelMixin"
+  ]
+}

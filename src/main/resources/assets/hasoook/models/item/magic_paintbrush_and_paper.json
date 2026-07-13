@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hasoook:item/magic_paintbrush_and_paper"
+  }
+}

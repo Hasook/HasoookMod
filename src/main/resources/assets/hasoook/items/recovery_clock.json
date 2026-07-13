@@ -1,0 +1,44 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "entries": [
+      {
+        "threshold": 1.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_1" }
+      },
+      {
+        "threshold": 2.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_2" }
+      },
+      {
+        "threshold": 3.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_3" }
+      },
+      {
+        "threshold": 4.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_4" }
+      },
+      {
+        "threshold": 5.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_5" }
+      },
+      {
+        "threshold": 6.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_6" }
+      },
+      {
+        "threshold": 7.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_7" }
+      },
+      {
+        "threshold": 8.0,
+        "model": { "type": "minecraft:model", "model": "hasoook:item/recovery_clock_8" }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hasoook:item/recovery_clock_0"
+    }
+  }
+}

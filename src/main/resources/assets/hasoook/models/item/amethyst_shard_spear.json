@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hasoook:item/amethyst_shard_spear"
+  }
+}

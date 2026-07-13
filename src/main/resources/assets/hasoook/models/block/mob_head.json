@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "minecraft:block/soul_sand",
+    "down": "minecraft:block/soul_sand",
+    "up": "minecraft:block/soul_sand",
+    "north": "minecraft:block/soul_sand",
+    "south": "minecraft:block/soul_sand",
+    "east": "minecraft:block/soul_sand",
+    "west": "minecraft:block/soul_sand"
+  },
+  "elements": [
+    {
+      "from": [4, 0, 4],
+      "to": [12, 8, 12],
+      "faces": {
+        "down":  { "uv": [4, 8, 12, 12], "texture": "#down", "cullface": "down" },
+        "up":    { "uv": [4, 4, 12, 8], "texture": "#up" },
+        "north": { "uv": [4, 8, 12, 16], "texture": "#north" },
+        "south": { "uv": [4, 8, 12, 16], "texture": "#south" },
+        "west":  { "uv": [4, 8, 12, 16], "texture": "#west" },
+        "east":  { "uv": [4, 8, 12, 16], "texture": "#east" }
+      }
+    }
+  ]
+}

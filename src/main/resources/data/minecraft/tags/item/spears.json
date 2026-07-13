@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "hasoook:slime_spear",
+    "hasoook:firework_rocket_spear",
+    "hasoook:heavy_spear",
+    "hasoook:amethyst_shard_spear",
+    "hasoook:end_crystal_spear",
+    "hasoook:nether_star_spear",
+    "hasoook:lightning_spear",
+    "hasoook:piston_spear",
+    "hasoook:sticky_piston_spear",
+    "hasoook:end_rod_spear"
+  ]
+}
