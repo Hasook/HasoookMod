@@ -5,9 +5,7 @@ import com.hasoook.hasoook.item.ModItems;
 import com.hasoook.hasoook.recipe.ModRecipeSerializers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -41,12 +39,6 @@ public class Hasoook implements ModInitializer {
 
 		// Register tooltip event (client-side, safe to call here)
 		SlimeballSpearTooltipEvents.register();
-
-		// Add items to vanilla Combat tab
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
-			entries.add(ModItems.SLIME_SPEAR);
-			entries.add(ModItems.FIREWORK_ROCKET_SPEAR);
-		});
 
 		LOGGER.info("Hasoook initialized!");
 	}

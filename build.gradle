@@ -5,6 +5,9 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
+base {
+	archivesName = "${project.name}-fabric-${project.minecraft_version}"
+}
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
