@@ -38,7 +38,7 @@ public class SockFaceLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     };
 
     /// 脸部在头部模型前方的 Z 偏移（玩家头部 8×8×8 像素，脸部在前 -Z 方向）
-    private static final float FACE_Z = -4.5f / 16.0f;
+    private static final float FACE_Z = -5.0f / 16.0f;
     /// 脸部中心在头部模型中的 Y 偏移（头部 pivot 在头顶，面部中心在 -4 像素处）
     private static final float FACE_Y = -5.0f / 16.0f;
     /// 每层袜子的 Z 深度偏移，防止多张贴图重叠时产生 z-fighting 闪烁
