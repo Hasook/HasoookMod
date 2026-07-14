@@ -2,6 +2,7 @@ package com.hasoook.hasoook;
 
 import com.hasoook.hasoook.block.ModBlocks;
 import com.hasoook.hasoook.block.entity.ModBlockEntities;
+import com.hasoook.hasoook.client.renderer.SockFaceLayer;
 import com.hasoook.hasoook.client.renderer.TransplantedHeadLayer;
 import com.hasoook.hasoook.command.ModCommands;
 import com.hasoook.hasoook.command.PaintQuestCommand;
@@ -102,6 +103,10 @@ public class Hasoook {
             AvatarRenderer<AbstractClientPlayer> playerRenderer = event.getPlayerRenderer(modelType);
             if (playerRenderer instanceof LivingEntityRenderer renderer) {
                 renderer.addLayer(new TransplantedHeadLayer(renderer));
+            }
+            // 袜子糊脸层（仅玩家）
+            if (playerRenderer != null) {
+                playerRenderer.addLayer(new SockFaceLayer(playerRenderer));
             }
         }
     }

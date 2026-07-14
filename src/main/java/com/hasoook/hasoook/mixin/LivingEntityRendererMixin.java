@@ -2,6 +2,7 @@ package com.hasoook.hasoook.mixin;
 
 import com.hasoook.hasoook.component.ModAttachments;
 import com.hasoook.hasoook.duck.HeadRemovedAccess;
+import com.hasoook.hasoook.duck.SockFaceAccess;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,6 +33,12 @@ public abstract class LivingEntityRendererMixin {
             // 同步移植玩家头名称（用于皮肤查询）
             String playerName = entity.getData(ModAttachments.TRANSPLANTED_HEAD_PLAYER_NAME.get());
             access.hasoook$setTransplantedPlayerName(playerName != null && !playerName.isEmpty() ? playerName : null);
+        }
+
+        // 同步袜子糊脸数据
+        if (renderState instanceof SockFaceAccess sockAccess) {
+            String sockFaceData = entity.getData(ModAttachments.SOCK_FACE.get());
+            sockAccess.hasoook$setSockFaceData(sockFaceData != null ? sockFaceData : "");
         }
     }
 }
