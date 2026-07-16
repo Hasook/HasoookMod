@@ -49,6 +49,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.COPPER_GOLEM_BATTLE_CHIP);
                         output.accept(ModItems.CHARGED_COPPER_SWORD);
                         output.accept(ModItems.CHARGED_COPPER_PICKAXE);
+                        output.accept(ModItems.BUILDING_BLOCK);
 
                         // 自定义附魔书
                         var enchantmentLookup = itemDisplayParameters.holders()
