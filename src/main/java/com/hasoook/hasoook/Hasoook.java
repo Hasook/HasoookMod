@@ -1,7 +1,13 @@
 package com.hasoook.hasoook;
 
+import com.hasoook.hasoook.component.ModDataComponents;
+import com.hasoook.hasoook.entity.ModEntities;
+import com.hasoook.hasoook.event.SocksEventHandler;
 import com.hasoook.hasoook.event.item.SlimeballSpearTooltipEvents;
+import com.hasoook.hasoook.event.item.SocksTooltipEvents;
+import com.hasoook.hasoook.event.item.SocksCauldronEvents;
 import com.hasoook.hasoook.item.ModItems;
+import com.hasoook.hasoook.network.ModNetworkInit;
 import com.hasoook.hasoook.recipe.ModRecipeSerializers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -28,6 +34,8 @@ public class Hasoook implements ModInitializer {
 					.entries((displayContext, entries) -> {
 						entries.add(ModItems.SLIME_SPEAR);
 						entries.add(ModItems.FIREWORK_ROCKET_SPEAR);
+						entries.add(ModItems.SOCKS);
+						entries.add(ModItems.SOCK);
 					})
 					.build()
 	);
@@ -35,10 +43,20 @@ public class Hasoook implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModItems.initialize();
+		ModDataComponents.initialize();
+		ModEntities.initialize();
 		ModRecipeSerializers.initialize();
+		ModNetworkInit.initialize();
 
-		// Register tooltip event (client-side, safe to call here)
+		// Register tick-based sock events (wear, aura, etc.)
+		SocksEventHandler.register();
+
+		// Register tooltip events
 		SlimeballSpearTooltipEvents.register();
+		SocksTooltipEvents.register();
+
+		// Register cauldron washing for socks
+		SocksCauldronEvents.register();
 
 		LOGGER.info("Hasoook initialized!");
 	}

@@ -18,6 +18,9 @@
 		"main": [
 			"com.hasoook.hasoook.Hasoook"
 		],
+		"client": [
+			"com.hasoook.hasoook.HasoookClient"
+		],
 		"fabric-datagen": [
 			"com.hasoook.hasoook.HasoookDataGenerator"
 		]
