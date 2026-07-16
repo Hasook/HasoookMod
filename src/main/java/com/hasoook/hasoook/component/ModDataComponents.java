@@ -99,6 +99,10 @@ public class ModDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHARGED_COPPER_CHARGE_CAP =
             register("charged_copper_charge_cap", builder -> builder.persistent(Codec.INT));
 
+    // 积木附着数量（积木 + 鞋子合成，最多可塞16个，左键挥动可甩出积木）
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> BUILDING_BLOCK_ATTACHED =
+            register("building_block_attached", builder -> builder.persistent(Codec.INT));
+
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(
             String name,
             UnaryOperator<DataComponentType.Builder<T>> builderOperator

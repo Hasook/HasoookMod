@@ -53,7 +53,9 @@
   "item.hasoook.charged_copper_sword": "Charged Copper Sword",
   "item.hasoook.charged_copper_pickaxe": "Charged Copper Pickaxe",
   "item.hasoook.building_block": "Building Block",
+  "tooltip.hasoook.building_block_attached": "§7Building Blocks: %s/16 §8— swing to shake off",
 
+  "block.hasoook.building_block": "Building Block",
   "block.hasoook.mob_head": "Mob Head",
   "block.hasoook.phantom_lamp": "Phantom Lamp",
   "block.hasoook.phantom_lamp.too_early": "It's too early to sleep now",

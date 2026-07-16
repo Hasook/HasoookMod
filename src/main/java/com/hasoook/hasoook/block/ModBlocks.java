@@ -1,6 +1,7 @@
 package com.hasoook.hasoook.block;
 
 import com.hasoook.hasoook.Hasoook;
+import com.hasoook.hasoook.block.custom.BuildingBlockBlock;
 import com.hasoook.hasoook.block.custom.MobHeadBlock;
 import com.hasoook.hasoook.block.custom.PhantomLampBlock;
 import com.hasoook.hasoook.item.ModItems; // 假设你有一个 ModItems 类用来注册物品
@@ -29,6 +30,19 @@ public class ModBlocks {
                     .pushReaction(PushReaction.DESTROY)
                     .noLootTable()
                     .isValidSpawn((state, level, pos, type) -> false)
+                    .isRedstoneConductor((state, level, pos) -> false)
+                    .isSuffocating((state, level, pos) -> false)
+                    .isViewBlocking((state, level, pos) -> false)
+            ));
+
+    // 积木方块 — 不使用 registerBlock 辅助方法，因为其 BlockItem 在 ModItems 中已单独注册
+    public static final DeferredBlock<Block> BUILDING_BLOCK = BLOCKS.registerBlock("building_block",
+            properties -> new BuildingBlockBlock(properties
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(0.3F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY)
                     .isRedstoneConductor((state, level, pos) -> false)
                     .isSuffocating((state, level, pos) -> false)
                     .isViewBlocking((state, level, pos) -> false)

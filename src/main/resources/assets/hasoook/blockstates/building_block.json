@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "hasoook:block/building_block" },
+    "facing=east":  { "model": "hasoook:block/building_block", "y": 90 },
+    "facing=south": { "model": "hasoook:block/building_block", "y": 180 },
+    "facing=west":  { "model": "hasoook:block/building_block", "y": 270 }
+  }
+}

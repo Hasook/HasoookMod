@@ -53,7 +53,9 @@
   "item.hasoook.charged_copper_sword": "蓄电铜剑",
   "item.hasoook.charged_copper_pickaxe": "蓄电铜镐",
   "item.hasoook.building_block": "积木",
+  "tooltip.hasoook.building_block_attached": "§7附着积木: %s/16 §8— 手持左键挥动可甩出",
 
+  "block.hasoook.building_block": "积木",
   "block.hasoook.mob_head": "生物的头",
   "block.hasoook.phantom_lamp": "幻翼之灯",
   "block.hasoook.phantom_lamp.too_early": "现在还太早，无法入睡",

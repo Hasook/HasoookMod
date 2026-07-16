@@ -1,6 +1,7 @@
 package com.hasoook.hasoook.recipe;
 
 import com.hasoook.hasoook.Hasoook;
+import com.hasoook.hasoook.recipe.custom.BuildingBlockBootsRecipe;
 import com.hasoook.hasoook.recipe.custom.FireworkRocketSpearRecipe;
 import com.hasoook.hasoook.recipe.custom.PistonSpearRecipe;
 import com.hasoook.hasoook.recipe.custom.SlimeSpearRecipe;
@@ -39,4 +40,7 @@ public class ModRecipeSerializers {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<SocksCombineRecipe>> SOCKS_COMBINE =
             SERIALIZERS.register("crafting_special_socks_combine",
                     () -> new CustomRecipe.Serializer<>(SocksCombineRecipe::new));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BuildingBlockBootsRecipe>> BUILDING_BLOCK_BOOTS =
+            SERIALIZERS.register("crafting_special_building_block_boots",
+                    () -> new CustomRecipe.Serializer<>(BuildingBlockBootsRecipe::new));
 }

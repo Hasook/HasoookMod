@@ -4,6 +4,7 @@ import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.block.ModBlocks;
 import com.hasoook.hasoook.item.custom.*;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
@@ -75,7 +76,8 @@ public class ModItems {
                             BlockTags.MINEABLE_WITH_PICKAXE, 1.0F, -2.8F, 0.0F)),
             Item.Properties::new);
     public static final DeferredItem<Item> BUILDING_BLOCK = ITEMS.registerItem("building_block",
-            ThrowableSockItem::new, Item.Properties::new);
+            properties -> new BlockItem(ModBlocks.BUILDING_BLOCK.get(), properties.useBlockDescriptionPrefix()),
+            Item.Properties::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
