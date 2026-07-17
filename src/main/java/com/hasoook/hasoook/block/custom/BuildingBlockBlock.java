@@ -14,6 +14,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * 积木方块 — 可旋转放置的小装饰方块，碰撞箱 4×6×2（宽×深×高，像素），随朝向旋转。
+ * <p>
+ * 踩踏伤害和镜头摇晃由 {@link com.hasoook.hasoook.event.block.BuildingBlockStepEvent} 通过 EntityTickEvent 处理。
+ * 原版的 stepOn/entityInside/fallOn 均不适用于 2px 薄方块。
  */
 public class BuildingBlockBlock extends Block {
 

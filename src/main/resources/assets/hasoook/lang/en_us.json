@@ -13,6 +13,7 @@
   "advancements.hasoook.head_connector.description": "Attach a mob head to a headless creature",
 
   "death.attack.temporal_collapse": "%1$s was lost in the rewind",
+  "death.attack.building_block": "%1$s stepped on a building block",
 
   "entity.hasoook.amethyst_shard": "Amethyst Shard",
 
@@ -22,6 +23,8 @@
   "enchantment.hasoook.debtshot": "Debtshot",
   "enchantment.hasoook.louis": "Louis",
   "enchantment.hasoook.giving": "Giving",
+  "enchantment.hasoook.cheating": "Card Sharp",
+  "enchantment.hasoook.cheating.desc": "Projectile slightly homes toward nearby creatures",
 
   "enchantment.level.16": "XVI",
 
@@ -53,7 +56,11 @@
   "item.hasoook.charged_copper_sword": "Charged Copper Sword",
   "item.hasoook.charged_copper_pickaxe": "Charged Copper Pickaxe",
   "item.hasoook.building_block": "Building Block",
-  "tooltip.hasoook.building_block_attached": "§7Building Blocks: %s/16 §8— swing to shake off",
+  "item.hasoook.poker": "Poker",
+  "item.hasoook.poker.tooltip": "§7Right-click a Villager to play Blackjack",
+
+  "gui.hasoook.blackjack": "Blackjack",
+  "gui.hasoook.doudizhu": "Fight the Landlord",
 
   "block.hasoook.building_block": "Building Block",
   "block.hasoook.mob_head": "Mob Head",
@@ -69,8 +76,10 @@
   "tooltip.hasoook.phantom_lamp.pristine": "§bPristine Phantom Lamp — can freeze nearby creatures",
   "tooltip.hasoook.phantom_lamp.broken": "§cBroken Phantom Lamp — repair with 3 Phantom Membranes in an Anvil",
   "tooltip.hasoook.phantom_lamp.repaired": "§aRepaired Phantom Lamp — sleep safely near monsters",
+  "tooltip.hasoook.building_block_attached": "§7Building Blocks: %s/16 §8— swing to shake off",
 
   "effect.hasoook.temporal_distortion": "Temporal Distortion",
+  "effect.hasoook.disability": "Disability",
 
   "gui.hasoook.sock_drop_zone": "Drag here to remove socks",
   "message.hasoook.villager_refuse_smelly": "You smell too bad! The villager refuses to trade.",
@@ -124,5 +133,15 @@
   "hasoook.config.head_cut_damage_percent": "Head Cut Damage Percent",
   "hasoook.config.head_cut_damage_percent.tooltip": "Percentage of max health dealt as damage when a head is cut off. 0.0 = no damage, 1.0 = instant death.",
   "hasoook.config.headless_blindness": "Headless Blindness",
-  "hasoook.config.headless_blindness.tooltip": "When enabled, entities and players continuously gain the Blindness effect while in a headless state."
+  "hasoook.config.headless_blindness.tooltip": "When enabled, entities and players continuously gain the Blindness effect while in a headless state.",
+
+  "hasoook.configuration.building_block": "Building Block Configuration",
+  "hasoook.config.building_block.disability_duration": "Disability Duration",
+  "hasoook.config.building_block.disability_duration.tooltip": "Duration of the disability effect (in ticks, 20=1 second).",
+  "hasoook.config.building_block.disability_chance": "Disability Trigger Chance",
+  "hasoook.config.building_block.disability_chance.tooltip": "Probability of triggering the disability effect when stepping on a building block (0.0~1.0).",
+  "hasoook.config.building_block.break_chance": "Break Chance",
+  "hasoook.config.building_block.break_chance.tooltip": "Probability of the building block breaking when it deals damage (0.0~1.0).",
+  "hasoook.config.building_block.disability_damage_ratio": "Disability Damage Ratio",
+  "hasoook.config.building_block.disability_damage_ratio.tooltip": "Percentage of max health dealt as damage when the disability effect triggers (0.0~1.0, default 0.5 = 50%)."
 }

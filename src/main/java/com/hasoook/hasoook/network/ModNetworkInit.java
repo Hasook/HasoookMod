@@ -10,9 +10,13 @@ import com.hasoook.hasoook.network.handler.ConsumeDyeHandler;
 import com.hasoook.hasoook.network.handler.DrawSaveMapHandler;
 import com.hasoook.hasoook.network.handler.GiveResultHandler;
 import com.hasoook.hasoook.network.handler.QuestSyncHandler;
+import com.hasoook.hasoook.network.handler.BlackjackSyncHandler;
+import com.hasoook.hasoook.network.handler.DouDiZhuSyncHandler;
 import com.hasoook.hasoook.network.manager.PlayerFpsManager;
 import com.hasoook.hasoook.network.manager.PlayerWindowManager;
 import com.hasoook.hasoook.network.payload.*;
+import com.hasoook.hasoook.screen.custom.BlackjackGameMenu;
+import com.hasoook.hasoook.screen.custom.DouDiZhuGameMenu;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -135,6 +139,44 @@ public class ModNetworkInit {
                         }
                     });
                 }
+        );
+        registrar.playToServer(
+                BlackjackActionPayload.TYPE,
+                BlackjackActionPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.containerMenu instanceof BlackjackGameMenu menu) {
+                            menu.handleAction(payload.action(), payload.data());
+                        }
+                    });
+                }
+        );
+        registrar.playToClient(
+                BlackjackSyncPayload.TYPE,
+                BlackjackSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    BlackjackSyncHandler.handle(payload);
+                })
+        );
+        registrar.playToServer(
+                DouDiZhuActionPayload.TYPE,
+                DouDiZhuActionPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.containerMenu instanceof DouDiZhuGameMenu menu) {
+                            menu.handleAction(payload.action(), payload.data(), payload.cardMask());
+                        }
+                    });
+                }
+        );
+        registrar.playToClient(
+                DouDiZhuSyncPayload.TYPE,
+                DouDiZhuSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    DouDiZhuSyncHandler.handle(payload);
+                })
         );
     }
 }

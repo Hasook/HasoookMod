@@ -6,10 +6,14 @@ import com.hasoook.hasoook.client.renderer.MobHeadSpecialRenderer;
 import com.hasoook.hasoook.entity.ModEntities;
 import com.hasoook.hasoook.entity.client.AmethystShardProjectileRenderer;
 import com.hasoook.hasoook.entity.client.ArmorStandSwordProjectileRenderer;
+import com.hasoook.hasoook.entity.client.CardProjectileRenderer;
 import com.hasoook.hasoook.entity.client.EchoArrowRenderer;
 import com.hasoook.hasoook.entity.client.HeavyHalberdProjectileRenderer;
 import com.hasoook.hasoook.entity.client.SevowerProjectileRenderer;
 import com.hasoook.hasoook.screen.ModMenuTypes;
+import com.hasoook.hasoook.screen.custom.BlackjackGameScreen;
+import com.hasoook.hasoook.screen.custom.CheatingSuitOverlay;
+import com.hasoook.hasoook.screen.custom.DouDiZhuGameScreen;
 import com.hasoook.hasoook.screen.custom.RedEnvelopeScreen;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -24,6 +28,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.NeoForge;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
 @Mod(value = Hasoook.MOD_ID, dist = Dist.CLIENT)
@@ -31,10 +36,9 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 @EventBusSubscriber(modid = Hasoook.MOD_ID, value = Dist.CLIENT)
 public class HasoookClient {
     public HasoookClient(ModContainer container) {
-        // Allows NeoForge to create a config screen for this mod's configs.
-        // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
-        // Do not forget to add translations for your config options to the en_us.json file.
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        // 出千附魔 HUD
+        NeoForge.EVENT_BUS.register(CheatingSuitOverlay.class);
     }
 
     @SubscribeEvent
@@ -45,11 +49,14 @@ public class HasoookClient {
         EntityRenderers.register(ModEntities.HEAVY_HALBERD.get(), HeavyHalberdProjectileRenderer::new);
         EntityRenderers.register(ModEntities.ARMOR_STAND_SWORD_PROJECTILE.get(), ArmorStandSwordProjectileRenderer::new);
         EntityRenderers.register(ModEntities.THROWN_SOCK.get(), ThrownItemRenderer::new);
+        EntityRenderers.register(ModEntities.CARD_PROJECTILE.get(), CardProjectileRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.RED_ENVELOPE_MENU.get(), RedEnvelopeScreen::new);
+        event.register(ModMenuTypes.BLACKJACK_GAME_MENU.get(), BlackjackGameScreen::new);
+        event.register(ModMenuTypes.DOUDIZHU_GAME_MENU.get(), DouDiZhuGameScreen::new);
     }
 
     @SubscribeEvent

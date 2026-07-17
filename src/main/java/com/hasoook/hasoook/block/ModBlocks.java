@@ -2,6 +2,7 @@ package com.hasoook.hasoook.block;
 
 import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.block.custom.BuildingBlockBlock;
+import com.hasoook.hasoook.block.custom.BuildingBlockCarpetBlock;
 import com.hasoook.hasoook.block.custom.MobHeadBlock;
 import com.hasoook.hasoook.block.custom.PhantomLampBlock;
 import com.hasoook.hasoook.item.ModItems; // 假设你有一个 ModItems 类用来注册物品
@@ -40,13 +41,17 @@ public class ModBlocks {
             properties -> new BuildingBlockBlock(properties
                     .mapColor(MapColor.COLOR_RED)
                     .strength(0.3F)
-                    .sound(SoundType.WOOD)
+                    .sound(SoundType.METAL)
                     .noOcclusion()
                     .pushReaction(PushReaction.DESTROY)
                     .isRedstoneConductor((state, level, pos) -> false)
                     .isSuffocating((state, level, pos) -> false)
                     .isViewBlocking((state, level, pos) -> false)
             ));
+
+    // 积木地毯 — 仅通过手持积木右键普通地毯生成，不注册 BlockItem
+    public static final DeferredBlock<Block> BUILDING_BLOCK_CARPET = BLOCKS.registerBlock("building_block_carpet",
+            BuildingBlockCarpetBlock::new);
 
     // 生物头方块 — 不使用 registerBlock 辅助方法，因为其 BlockItem 在 ModItems 中单独注册（使用自定义 MobHeadItem）
     public static final DeferredBlock<Block> MOB_HEAD = BLOCKS.registerBlock("mob_head",

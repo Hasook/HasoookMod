@@ -11,6 +11,7 @@ import com.hasoook.hasoook.component.ModDataComponents;
 import com.hasoook.hasoook.effect.ModEffects;
 import com.hasoook.hasoook.enchantment.ModEnchantmentEffects;
 import com.hasoook.hasoook.entity.ModEntities;
+import com.hasoook.hasoook.event.block.BuildingBlockStepEvent;
 import com.hasoook.hasoook.item.ModCreativeModeTabs;
 import com.hasoook.hasoook.item.ModItems;
 import com.hasoook.hasoook.recipe.ModRecipeSerializers;
@@ -66,6 +67,7 @@ public class Hasoook {
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC);
 
         NeoForge.EVENT_BUS.register(TickScheduler.class);
+        NeoForge.EVENT_BUS.register(BuildingBlockStepEvent.class);
         NeoForge.EVENT_BUS.addListener(this::registerCommands);
 
         // Register the commonSetup method for modloading

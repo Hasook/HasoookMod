@@ -23,14 +23,21 @@ public class TickScheduler {
 
         long time = level.getGameTime();
 
+        // 先收集到期任务，避免在执行任务时添加新任务导致并发修改
+        List<Runnable> toRun = new ArrayList<>();
+
         Iterator<Task> iterator = TASKS.iterator();
         while (iterator.hasNext()) {
             Task task = iterator.next();
-
             if (task.level == level && task.executeTime <= time) {
-                task.runnable.run();
+                toRun.add(task.runnable);
                 iterator.remove();
             }
+        }
+
+        // 在迭代完成后再执行任务
+        for (Runnable runnable : toRun) {
+            runnable.run();
         }
     }
 

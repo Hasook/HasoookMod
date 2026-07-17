@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "color=white": { "model": "hasoook:block/building_block_carpet_white" },
+    "color=orange": { "model": "hasoook:block/building_block_carpet_orange" },
+    "color=magenta": { "model": "hasoook:block/building_block_carpet_magenta" },
+    "color=light_blue": { "model": "hasoook:block/building_block_carpet_light_blue" },
+    "color=yellow": { "model": "hasoook:block/building_block_carpet_yellow" },
+    "color=lime": { "model": "hasoook:block/building_block_carpet_lime" },
+    "color=pink": { "model": "hasoook:block/building_block_carpet_pink" },
+    "color=gray": { "model": "hasoook:block/building_block_carpet_gray" },
+    "color=light_gray": { "model": "hasoook:block/building_block_carpet_light_gray" },
+    "color=cyan": { "model": "hasoook:block/building_block_carpet_cyan" },
+    "color=purple": { "model": "hasoook:block/building_block_carpet_purple" },
+    "color=blue": { "model": "hasoook:block/building_block_carpet_blue" },
+    "color=brown": { "model": "hasoook:block/building_block_carpet_brown" },
+    "color=green": { "model": "hasoook:block/building_block_carpet_green" },
+    "color=red": { "model": "hasoook:block/building_block_carpet_red" },
+    "color=black": { "model": "hasoook:block/building_block_carpet_black" }
+  }
+}

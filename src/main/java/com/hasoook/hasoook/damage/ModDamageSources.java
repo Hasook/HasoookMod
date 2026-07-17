@@ -14,4 +14,12 @@ public class ModDamageSources {
         return new DamageSource(type);
     }
 
+    /// 积木踩踏伤害
+    public static DamageSource buildingBlock(ServerLevel level) {
+        Holder<DamageType> type = level.registryAccess()
+                .lookupOrThrow(Registries.DAMAGE_TYPE)
+                .getOrThrow(ModDamageTypes.BUILDING_BLOCK);
+        return new DamageSource(type);
+    }
+
 }

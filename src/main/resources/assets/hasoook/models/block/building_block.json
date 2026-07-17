@@ -1,6 +1,50 @@
 {
-  "parent": "minecraft:block/button",
-  "textures": {
-    "texture": "minecraft:block/stone"
-  }
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "hasoook:block/building_block",
+		"particle": "hasoook:block/building_block"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 6],
+			"to": [11, 2, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 0, 6]},
+			"faces": {
+				"north": {"uv": [2, 2, 5, 3], "texture": "#0"},
+				"east": {"uv": [0, 2, 2, 3], "texture": "#0"},
+				"south": {"uv": [7, 2, 10, 3], "texture": "#0"},
+				"west": {"uv": [5, 2, 7, 3], "texture": "#0"},
+				"up": {"uv": [5, 2, 2, 0], "texture": "#0"},
+				"down": {"uv": [8, 0, 5, 2], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5.5, 2, 7],
+			"to": [7.5, 3, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5.5, 2, 7]},
+			"faces": {
+				"north": {"uv": [1, 4, 2, 4.5], "texture": "#0"},
+				"east": {"uv": [0, 4, 1, 4.5], "texture": "#0"},
+				"south": {"uv": [3, 4, 4, 4.5], "texture": "#0"},
+				"west": {"uv": [2, 4, 3, 4.5], "texture": "#0"},
+				"up": {"uv": [2, 4, 1, 3], "texture": "#0"},
+				"down": {"uv": [3, 3, 2, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.5, 2, 7],
+			"to": [10.5, 3, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 2, 7]},
+			"faces": {
+				"north": {"uv": [1, 4, 2, 4.5], "texture": "#0"},
+				"east": {"uv": [0, 4, 1, 4.5], "texture": "#0"},
+				"south": {"uv": [3, 4, 4, 4.5], "texture": "#0"},
+				"west": {"uv": [2, 4, 3, 4.5], "texture": "#0"},
+				"up": {"uv": [2, 4, 1, 3], "texture": "#0"},
+				"down": {"uv": [3, 3, 2, 4], "texture": "#0"}
+			}
+		}
+	]
 }

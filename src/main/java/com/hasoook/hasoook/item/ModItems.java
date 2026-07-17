@@ -76,8 +76,12 @@ public class ModItems {
                             BlockTags.MINEABLE_WITH_PICKAXE, 1.0F, -2.8F, 0.0F)),
             Item.Properties::new);
     public static final DeferredItem<Item> BUILDING_BLOCK = ITEMS.registerItem("building_block",
-            properties -> new BlockItem(ModBlocks.BUILDING_BLOCK.get(), properties.useBlockDescriptionPrefix()),
+            properties -> new BuildingBlockItem(ModBlocks.BUILDING_BLOCK.get(), properties.useBlockDescriptionPrefix()),
             Item.Properties::new);
+    public static final DeferredItem<Item> POKER = ITEMS.registerItem("poker",
+            properties -> new PokerItem(properties.durability(54)));
+    public static final DeferredItem<Item> CARD_PROJECTILE = ITEMS.registerItem("card_projectile",
+            Item::new, Item.Properties::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

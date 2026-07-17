@@ -1,6 +1,8 @@
 package com.hasoook.hasoook.screen;
 
 import com.hasoook.hasoook.Hasoook;
+import com.hasoook.hasoook.screen.custom.BlackjackGameMenu;
+import com.hasoook.hasoook.screen.custom.DouDiZhuGameMenu;
 import com.hasoook.hasoook.screen.custom.RedEnvelopeMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,6 +19,12 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<RedEnvelopeMenu>> RED_ENVELOPE_MENU =
             registerMenuType("red_envelope_menu", RedEnvelopeMenu::new);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<BlackjackGameMenu>> BLACKJACK_GAME_MENU =
+            registerMenuType("blackjack_game_menu", BlackjackGameMenu::new);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<DouDiZhuGameMenu>> DOUDIZHU_GAME_MENU =
+            registerMenuType("doudizhu_game_menu", DouDiZhuGameMenu::new);
 
     private static <T extends AbstractContainerMenu>DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));

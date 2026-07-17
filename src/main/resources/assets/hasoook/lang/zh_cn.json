@@ -13,6 +13,7 @@
   "advancements.hasoook.head_connector.description": "给无头生物接上一个头",
 
   "death.attack.temporal_collapse": "%1$s迷失在了时间乱流中",
+  "death.attack.building_block": "%1$s被积木杀死了",
 
   "entity.hasoook.amethyst_shard": "紫水晶碎片",
 
@@ -22,6 +23,10 @@
   "enchantment.hasoook.debtshot": "欠费射击",
   "enchantment.hasoook.louis": "路易",
   "enchantment.hasoook.giving": "给予",
+  "enchantment.hasoook.cheating": "出千",
+  "enchantment.hasoook.cheating.desc": "飞牌时自动索敌，纸牌会微微偏向附近生物",
+  "enchantment.hasoook.card_throw": "飞牌",
+  "enchantment.hasoook.card_throw.desc": "可将扑克牌像飞镖一样投掷出去",
 
   "enchantment.level.16": "XVI",
 
@@ -53,7 +58,11 @@
   "item.hasoook.charged_copper_sword": "蓄电铜剑",
   "item.hasoook.charged_copper_pickaxe": "蓄电铜镐",
   "item.hasoook.building_block": "积木",
-  "tooltip.hasoook.building_block_attached": "§7附着积木: %s/16 §8— 手持左键挥动可甩出",
+  "item.hasoook.poker": "扑克牌",
+  "item.hasoook.poker.tooltip": "§7右键村民进行 21 点游戏",
+
+  "gui.hasoook.blackjack": "21点",
+  "gui.hasoook.doudizhu": "斗地主",
 
   "block.hasoook.building_block": "积木",
   "block.hasoook.mob_head": "生物的头",
@@ -69,8 +78,10 @@
   "tooltip.hasoook.phantom_lamp.pristine": "§b崭新的幻翼之灯 — 可定格周围生物",
   "tooltip.hasoook.phantom_lamp.broken": "§c损坏的幻翼之灯 — 需要铁砧修复（3个幻翼膜）",
   "tooltip.hasoook.phantom_lamp.repaired": "§a修复的幻翼之灯 — 可在怪物旁安睡",
+  "tooltip.hasoook.building_block_attached": "§7附着积木: %s/16 §8— 手持左键挥动可甩出",
 
   "effect.hasoook.temporal_distortion": "时间紊乱",
+  "effect.hasoook.disability": "一级伤残",
 
   "gui.hasoook.sock_drop_zone": "拖到此处摘下袜子",
   "message.hasoook.villager_refuse_smelly": "你太臭了，村民拒绝和你交易",
@@ -124,5 +135,15 @@
   "hasoook.config.head_cut_damage_percent": "剪头伤害百分比",
   "hasoook.config.head_cut_damage_percent.tooltip": "剪掉生物头时造成的伤害占目标最大生命值的百分比。0.0=不造成伤害，1.0=即死。",
   "hasoook.config.headless_blindness": "无头失明",
-  "hasoook.config.headless_blindness.tooltip": "开启后，生物或玩家在无头状态下会持续获得失明效果。"
+  "hasoook.config.headless_blindness.tooltip": "开启后，生物或玩家在无头状态下会持续获得失明效果。",
+
+  "hasoook.configuration.building_block": "积木配置",
+  "hasoook.config.building_block.disability_duration": "伤残持续时间",
+  "hasoook.config.building_block.disability_duration.tooltip": "一级伤残效果的持续时间（tick，20=1秒）。",
+  "hasoook.config.building_block.disability_chance": "伤残触发概率",
+  "hasoook.config.building_block.disability_chance.tooltip": "踩到积木时触发一级伤残的概率（0.0~1.0）。",
+  "hasoook.config.building_block.break_chance": "积木破碎概率",
+  "hasoook.config.building_block.break_chance.tooltip": "积木每次造成伤害时自身破碎的概率（0.0~1.0）。",
+  "hasoook.config.building_block.disability_damage_ratio": "致残伤害比例",
+  "hasoook.config.building_block.disability_damage_ratio.tooltip": "一级伤残触发时造成的伤害比例，基于目标最大生命值（0.0~1.0，默认 0.5 = 50%）。"
 }

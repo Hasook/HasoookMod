@@ -13,4 +13,11 @@ public class ModDamageTypes {
                     Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "temporal_collapse")
             );
 
+    /// 积木踩踏伤害类型
+    public static final ResourceKey<DamageType> BUILDING_BLOCK =
+            ResourceKey.create(
+                    Registries.DAMAGE_TYPE,
+                    Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "building_block")
+            );
+
 }

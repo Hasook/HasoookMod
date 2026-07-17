@@ -3,6 +3,7 @@ package com.hasoook.hasoook.entity;
 import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.entity.custom.AmethystShardProjectile;
 import com.hasoook.hasoook.entity.custom.ArmorStandSwordProjectile;
+import com.hasoook.hasoook.entity.custom.CardProjectile;
 import com.hasoook.hasoook.entity.custom.EchoArrowProjectile;
 import com.hasoook.hasoook.entity.custom.HeavyHalberdProjectile;
 import com.hasoook.hasoook.entity.custom.SevowerProjectile;
@@ -33,6 +34,8 @@ public class ModEntities {
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "armor_stand_sword_projectile"));
     public static final ResourceKey<EntityType<?>> THROWN_SOCK_KEY =
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "thrown_sock"));
+    public static final ResourceKey<EntityType<?>> CARD_PROJECTILE_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "card_projectile"));
 
     public static final Supplier<EntityType<AmethystShardProjectile>> AMETHYST_SHARD =
             ENTITY_TYPES.register("amethyst_shard", () -> EntityType.Builder.<AmethystShardProjectile>of(AmethystShardProjectile::new, MobCategory.MISC)
@@ -52,6 +55,9 @@ public class ModEntities {
     public static final Supplier<EntityType<ThrownSockEntity>> THROWN_SOCK =
             ENTITY_TYPES.register("thrown_sock", () -> EntityType.Builder.<ThrownSockEntity>of(ThrownSockEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build(THROWN_SOCK_KEY));
+    public static final Supplier<EntityType<CardProjectile>> CARD_PROJECTILE =
+            ENTITY_TYPES.register("card_projectile", () -> EntityType.Builder.<CardProjectile>of(CardProjectile::new, MobCategory.MISC)
+                    .sized(0.3f, 0.3f).clientTrackingRange(4).updateInterval(10).build(CARD_PROJECTILE_KEY));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

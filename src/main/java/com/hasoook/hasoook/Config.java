@@ -93,6 +93,36 @@ public class Config {
         BUILDER.pop(); // 退出生物头配置组
     }
 
+    // ==================== 积木相关配置 ====================
+    static {
+        BUILDER.comment("积木配置 (Building Block Configuration)")
+                .push("building_block");
+    }
+
+    public static final ModConfigSpec.IntValue DISABILITY_DURATION = BUILDER
+            .comment("一级伤残效果的持续时间（tick，20=1秒）")
+            .translation("hasoook.config.building_block.disability_duration")
+            .defineInRange("disabilityDuration", 300, 1, Integer.MAX_VALUE);
+
+    public static final ModConfigSpec.DoubleValue DISABILITY_CHANCE = BUILDER
+            .comment("踩到积木时触发一级伤残的概率（0.0~1.0）")
+            .translation("hasoook.config.building_block.disability_chance")
+            .defineInRange("disabilityChance", 0.1, 0.0, 1.0);
+
+    public static final ModConfigSpec.DoubleValue BUILDING_BLOCK_BREAK_CHANCE = BUILDER
+            .comment("积木造成伤害时，积木自身破碎的概率（0.0~1.0）")
+            .translation("hasoook.config.building_block.break_chance")
+            .defineInRange("breakChance", 0.2, 0.0, 1.0);
+
+    public static final ModConfigSpec.DoubleValue DISABILITY_DAMAGE_RATIO = BUILDER
+            .comment("一级伤残触发时造成的伤害比例，基于目标最大生命值（0.0~1.0，默认 0.5 = 50%）")
+            .translation("hasoook.config.building_block.disability_damage_ratio")
+            .defineInRange("disabilityDamageRatio", 0.5, 0.0, 1.0);
+
+    static {
+        BUILDER.pop();
+    }
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private static boolean validateItemName(final Object obj) {

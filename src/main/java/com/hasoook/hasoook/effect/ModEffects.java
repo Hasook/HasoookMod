@@ -15,6 +15,9 @@ public class ModEffects {
     public static final Holder<MobEffect> TEMPORAL_DISTORTION_EFFECT = MOB_EFFECTS.register("temporal_distortion",
             () -> new TemporalDistortionEffect(MobEffectCategory.NEUTRAL, 0x29dfeb));
 
+    public static final Holder<MobEffect> DISABILITY = MOB_EFFECTS.register("disability",
+            () -> new DisabilityEffect(MobEffectCategory.HARMFUL, 0x8B0000));
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

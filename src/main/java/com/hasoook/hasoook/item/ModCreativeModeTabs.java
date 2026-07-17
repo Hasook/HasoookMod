@@ -50,6 +50,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.CHARGED_COPPER_SWORD);
                         output.accept(ModItems.CHARGED_COPPER_PICKAXE);
                         output.accept(ModItems.BUILDING_BLOCK);
+                        output.accept(ModItems.POKER);
 
                         // 自定义附魔书
                         var enchantmentLookup = itemDisplayParameters.holders()
@@ -60,6 +61,8 @@ public class ModCreativeModeTabs {
                         addEnchantedBook(output, enchantmentLookup, ModEnchantments.DEBTSHOT, 1);
                         addEnchantedBook(output, enchantmentLookup, ModEnchantments.LOUIS, 16);
                         addEnchantedBook(output, enchantmentLookup, ModEnchantments.GIVING, 1);
+                        addEnchantedBook(output, enchantmentLookup, ModEnchantments.CHEATING, 1);
+                        addEnchantedBook(output, enchantmentLookup, ModEnchantments.CARD_THROW, 1);
                     }).build());
 
     /**

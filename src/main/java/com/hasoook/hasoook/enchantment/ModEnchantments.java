@@ -42,6 +42,12 @@ public class ModEnchantments {
     // 给予
     public static final ResourceKey<Enchantment> GIVING = ResourceKey.create(Registries.ENCHANTMENT,
             Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "giving"));
+    // 出千
+    public static final ResourceKey<Enchantment> CHEATING = ResourceKey.create(Registries.ENCHANTMENT,
+            Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "cheating"));
+    // 飞牌
+    public static final ResourceKey<Enchantment> CARD_THROW = ResourceKey.create(Registries.ENCHANTMENT,
+            Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "card_throw"));
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
         var enchantments = context.lookup(Registries.ENCHANTMENT);
@@ -112,6 +118,22 @@ public class ModEnchantments {
                         8,                                                       // 铁砧合并花费
                         EquipmentSlotGroup.MAINHAND))                            // 主手生效
                 .withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new GivingEnchantmentEffect())
+        );
+        register(context, CHEATING, Enchantment.enchantment(Enchantment.definition(
+                        items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
+                        4, 1,
+                        Enchantment.constantCost(30),
+                        Enchantment.constantCost(60),
+                        4,
+                        EquipmentSlotGroup.MAINHAND))
+        );
+        register(context, CARD_THROW, Enchantment.enchantment(Enchantment.definition(
+                        items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
+                        2, 1,
+                        Enchantment.constantCost(20),
+                        Enchantment.constantCost(50),
+                        2,
+                        EquipmentSlotGroup.MAINHAND))
         );
 
     }

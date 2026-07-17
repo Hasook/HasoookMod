@@ -88,6 +88,24 @@ public class ModAttachments {
                     .build()
     );
 
+    // 村民赌博底注 — 每个村民独立随机生成，受职业等级影响
+    public static final Supplier<AttachmentType<Integer>> VILLAGER_GAMBLE_STAKE = ATTACHMENT_TYPES.register(
+            "villager_gamble_stake",
+            () -> AttachmentType.builder(() -> 0)
+                    .serialize(Codec.INT.fieldOf("gamble_stake"))
+                    .sync(StreamCodec.of(RegistryFriendlyByteBuf::writeVarInt, RegistryFriendlyByteBuf::readVarInt))
+                    .build()
+    );
+
+    // 傻子村民绿宝石库存 — 输光后无法继续赌博，每天刷新
+    public static final Supplier<AttachmentType<Integer>> NITWIT_BUDGET = ATTACHMENT_TYPES.register(
+            "nitwit_budget",
+            () -> AttachmentType.builder(() -> -1)  // -1 表示未初始化
+                    .serialize(Codec.INT.fieldOf("nitwit_budget"))
+                    .sync(StreamCodec.of(RegistryFriendlyByteBuf::writeVarInt, RegistryFriendlyByteBuf::readVarInt))
+                    .build()
+    );
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }
