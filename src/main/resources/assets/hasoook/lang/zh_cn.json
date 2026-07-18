@@ -78,7 +78,6 @@
   "tooltip.hasoook.phantom_lamp.pristine": "§b崭新的幻翼之灯 — 可定格周围生物",
   "tooltip.hasoook.phantom_lamp.broken": "§c损坏的幻翼之灯 — 需要铁砧修复（3个幻翼膜）",
   "tooltip.hasoook.phantom_lamp.repaired": "§a修复的幻翼之灯 — 可在怪物旁安睡",
-  "tooltip.hasoook.building_block_attached": "§7附着积木: %s/16 §8— 手持左键挥动可甩出",
 
   "effect.hasoook.temporal_distortion": "时间紊乱",
   "effect.hasoook.disability": "一级伤残",

@@ -5,10 +5,10 @@
     "#": "minecraft:resin_brick"
   },
   "pattern": [
-    "##"
+    "###"
   ],
   "result": {
-    "count": 2,
+    "count": 3,
     "id": "hasoook:building_block"
   }
 }

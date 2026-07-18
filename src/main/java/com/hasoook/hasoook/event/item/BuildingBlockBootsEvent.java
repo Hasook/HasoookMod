@@ -3,8 +3,6 @@ package com.hasoook.hasoook.event.item;
 import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.component.ModDataComponents;
 import com.hasoook.hasoook.item.ModItems;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.HashMap;
@@ -20,12 +17,11 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 积木鞋事件 —— tooltip 显示数量 + 左键挥动甩出积木
+ * 积木鞋事件 —— 左键挥动甩出积木
  */
 @EventBusSubscriber(modid = Hasoook.MOD_ID)
 public class BuildingBlockBootsEvent {
 
-    private static final int MAX_BLOCKS = 16;
     private static final float EXTRACT_CHANCE = 0.3F;
     private static final int MAX_SOUND_PLAYS = 5;
     private static final SoundEvent[] RATTLE_SOUNDS = {
@@ -35,17 +31,6 @@ public class BuildingBlockBootsEvent {
     private static final Map<UUID, Boolean> WAS_SWINGING = new HashMap<>();
     private static final Map<UUID, Integer> SOUND_PLAYS_LEFT = new HashMap<>();
     private static final Map<UUID, Integer> SOUND_DELAY = new HashMap<>();
-
-    @SubscribeEvent
-    public static void onItemTooltip(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
-        int count = stack.getOrDefault(ModDataComponents.BUILDING_BLOCK_ATTACHED.get(), 0);
-        if (count > 0) {
-            event.getToolTip().add(
-                    Component.translatable("tooltip.hasoook.building_block_attached", count, MAX_BLOCKS)
-                            .withStyle(ChatFormatting.GRAY));
-        }
-    }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Pre event) {

@@ -8,6 +8,7 @@
     "FireworkRocketEntityMixin",
     "LivingEntityJumpMixin",
     "LivingEntityPushMixin",
+    "LivingEntitySneakMixin",
     "SolidBucketItemMixin",
     "TridentItemMixin",
     "VibrationListenerMixin"

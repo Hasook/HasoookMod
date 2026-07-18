@@ -76,7 +76,6 @@
   "tooltip.hasoook.phantom_lamp.pristine": "§bPristine Phantom Lamp — can freeze nearby creatures",
   "tooltip.hasoook.phantom_lamp.broken": "§cBroken Phantom Lamp — repair with 3 Phantom Membranes in an Anvil",
   "tooltip.hasoook.phantom_lamp.repaired": "§aRepaired Phantom Lamp — sleep safely near monsters",
-  "tooltip.hasoook.building_block_attached": "§7Building Blocks: %s/16 §8— swing to shake off",
 
   "effect.hasoook.temporal_distortion": "Temporal Distortion",
   "effect.hasoook.disability": "Disability",
