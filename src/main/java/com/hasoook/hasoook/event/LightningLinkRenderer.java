@@ -1,12 +1,10 @@
 package com.hasoook.hasoook.event;
 
 import com.hasoook.hasoook.Hasoook;
+import com.hasoook.hasoook.component.ModDataComponents;
+import com.hasoook.hasoook.enchantment.ModEnchantmentHelper;
+import com.hasoook.hasoook.enchantment.ModEnchantments;
 import com.hasoook.hasoook.entity.custom.HeavyHalberdProjectile;
-import com.hasoook.hasoook.item.custom.ChargedCopperAxeItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperHoeItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperPickaxeItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperShovelItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperSwordItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
@@ -18,6 +16,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -104,51 +103,40 @@ public class LightningLinkRenderer {
                 mc.player.getBoundingBox().inflate(SEARCH_RADIUS));
 
         for (Player player : players) {
-            // 检查主手和副手
-            ItemStack mainHand = player.getMainHandItem();
-            ItemStack offHand = player.getOffhandItem();
-            ItemStack held;
-            boolean isMainHand;
-            if (ChargedCopperSwordItem.isChargedCopperSword(mainHand)) {
-                held = mainHand;
-                isMainHand = true;
-            } else if (ChargedCopperSwordItem.isChargedCopperSword(offHand)) {
-                held = offHand;
-                isMainHand = false;
-            } else continue;
+            // 检查主手和副手（原版铜剑 + 储电附魔）
+            HandInfo info = findChargeEnchantedSword(player.getMainHandItem(), true)
+                    .or(() -> findChargeEnchantedSword(player.getOffhandItem(), false))
+                    .orElse(null);
+            if (info == null) continue;
 
-            int chainTicks = ChargedCopperSwordItem.getChainTicks(held);
+            ItemStack held = info.held;
+            int chainTicks = held.getOrDefault(ModDataComponents.CHARGED_COPPER_SWORD_CHAIN_TICKS.get(), 0);
             if (chainTicks <= 0) continue;
-
-            Vec3 targetPos = ChargedCopperSwordItem.getChainPos(held);
-            if (targetPos == null) continue;
-
-            int charge = ChargedCopperSwordItem.getCharge(held);
-            float widthMultiplier = ChargedCopperSwordItem.getLightningWidthMultiplier(charge);
+            Long encoded = held.get(ModDataComponents.CHARGED_COPPER_SWORD_CHAIN_POS.get());
+            if (encoded == null) continue;
+            Vec3 targetPos = BlockPos.of(encoded).getCenter();
+            int charge = held.getOrDefault(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), 0);
+            float widthMultiplier = getLightningWidthMultiplier(charge);
 
             // ── 计算手部偏移和弧度 ──
             Vec3 eye = player.getEyePosition();
             Vec3 look = player.getLookAngle();
-            // 右向量 = look × up（Minecraft 中 Y 轴朝上）
             Vec3 right = look.cross(new Vec3(0, 1, 0)).normalize();
-            double handSign = isMainHand ? 1.0 : -1.0; // 主手向右偏，副手向左偏
+            double handSign = info.isMainHand ? 1.0 : -1.0;
 
-            // 起点：从眼睛向手持方向轻微偏移
             Vec3 start = eye.add(right.scale(0.3 * handSign)).add(0, -0.3, 0);
 
-            // 弧度中点：向右手方向弯出一个弧
             double dist = start.distanceTo(targetPos);
             Vec3 toTarget = targetPos.subtract(start);
             Vec3 mid = start.add(toTarget.scale(0.3))
                     .add(right.scale(0.8 * handSign));
 
-            // ── 构建串联路径：起点 → 弧度中点 → 目标 → 最近 → 次近 → … ──
+            // ── 构建串联路径 ──
             List<Vec3> chainPoints = new ArrayList<>();
             chainPoints.add(start);
             chainPoints.add(mid);
             chainPoints.add(targetPos);
 
-            // 搜索并串联周围实体
             AABB searchBox = new AABB(targetPos, targetPos).inflate(RANGE);
             List<LivingEntity> allEntities = mc.level.getEntitiesOfClass(
                     LivingEntity.class, searchBox,
@@ -174,7 +162,6 @@ public class LightningLinkRenderer {
                 current = ep;
             }
 
-            // 绘制串联闪电
             for (int i = 0; i < chainPoints.size() - 1; i++) {
                 Vec3 from = chainPoints.get(i);
                 Vec3 to = chainPoints.get(i + 1);
@@ -183,6 +170,16 @@ public class LightningLinkRenderer {
                         camera, widthMultiplier);
             }
         }
+    }
+
+    /** 手部信息（用于区分主手/副手） */
+    private record HandInfo(ItemStack held, boolean isMainHand) {}
+
+    /** 检查物品是否为有储电附魔的铜剑，返回手部信息 */
+    private static Optional<HandInfo> findChargeEnchantedSword(ItemStack stack, boolean isMainHand) {
+        if (!stack.is(Items.COPPER_SWORD)) return Optional.empty();
+        if (ModEnchantmentHelper.getEnchantmentLevel(ModEnchantments.CHARGE, stack) <= 0) return Optional.empty();
+        return Optional.of(new HandInfo(stack, isMainHand));
     }
 
     // ════════════════════════════════════════════════════════
@@ -197,48 +194,22 @@ public class LightningLinkRenderer {
         for (Player player : players) {
             ItemStack held = player.getMainHandItem();
 
-            // 判断工具类型并获取对应的 chain 数据
-            int chainTicks = 0;
-            int charge = 0;
-            float widthMultiplier = 1.0F;
-            Vec3 origin = null;
-            List<BlockPos> chainBlocks = List.of();
+            // 只处理原版铜工具且有储电附魔
+            if (!isVanillaCopperTool(held)) continue;
+            if (ModEnchantmentHelper.getEnchantmentLevel(ModEnchantments.CHARGE, held) <= 0) continue;
 
-            if (ChargedCopperPickaxeItem.isChargedCopperPickaxe(held)) {
-                chainTicks = ChargedCopperPickaxeItem.getChainTicks(held);
-                if (chainTicks > 0) {
-                    origin = ChargedCopperPickaxeItem.getChainPos(held);
-                    charge = ChargedCopperPickaxeItem.getCharge(held);
-                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
-                    chainBlocks = ChargedCopperPickaxeItem.getChainBlocks(held);
-                }
-            } else if (ChargedCopperAxeItem.isChargedCopperAxe(held)) {
-                chainTicks = ChargedCopperAxeItem.getChainTicks(held);
-                if (chainTicks > 0) {
-                    origin = ChargedCopperAxeItem.getChainPos(held);
-                    charge = ChargedCopperAxeItem.getCharge(held);
-                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
-                    chainBlocks = ChargedCopperAxeItem.getChainBlocks(held);
-                }
-            } else if (ChargedCopperHoeItem.isChargedCopperHoe(held)) {
-                chainTicks = ChargedCopperHoeItem.getChainTicks(held);
-                if (chainTicks > 0) {
-                    origin = ChargedCopperHoeItem.getChainPos(held);
-                    charge = ChargedCopperHoeItem.getCharge(held);
-                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
-                    chainBlocks = ChargedCopperHoeItem.getChainBlocks(held);
-                }
-            } else if (ChargedCopperShovelItem.isChargedCopperShovel(held)) {
-                chainTicks = ChargedCopperShovelItem.getChainTicks(held);
-                if (chainTicks > 0) {
-                    origin = ChargedCopperShovelItem.getChainPos(held);
-                    charge = ChargedCopperShovelItem.getCharge(held);
-                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
-                    chainBlocks = ChargedCopperShovelItem.getChainBlocks(held);
-                }
-            }
+            int chainTicks = held.getOrDefault(ModDataComponents.CHARGED_COPPER_SWORD_CHAIN_TICKS.get(), 0);
+            if (chainTicks <= 0) continue;
 
-            if (chainTicks <= 0 || origin == null) continue;
+            Long encoded = held.get(ModDataComponents.CHARGED_COPPER_SWORD_CHAIN_POS.get());
+            if (encoded == null) continue;
+            Vec3 origin = BlockPos.of(encoded).getCenter();
+
+            int charge = held.getOrDefault(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), 0);
+            float widthMultiplier = getLightningWidthMultiplier(charge);
+
+            List<BlockPos> chainBlocks = readToolChainBlocks(held);
+            if (chainBlocks.isEmpty()) continue;
 
             long seedBase = timeSeed + player.getId() * 31L;
             int idx = 0;
@@ -252,54 +223,44 @@ public class LightningLinkRenderer {
     }
 
 
-    /**
-     * 构建串联闪电链路径：玩家头顶上方 → 目标中心 → 最近实体 → 次近 → …
-     * 包含已死亡实体（尸体/残骸），让视觉效果更震撼。
-     * 起点从玩家眼睛上方偏移，避免第一人称遮挡准星。
-     */
-    private static List<Vec3> buildSerialChain(Minecraft mc, Player player, Vec3 targetPos) {
-        List<Vec3> points = new ArrayList<>();
+    // ════════════════════════════════════════════════════════
+    // 工具函数
+    // ════════════════════════════════════════════════════════
 
-        // 起点：玩家眼睛下方 0.3 格，避开准星
-        points.add(player.getEyePosition().add(0, -0.3, 0));
+    /** 判断是否为原版铜工具 */
+    private static boolean isVanillaCopperTool(ItemStack stack) {
+        return stack.is(Items.COPPER_PICKAXE)
+                || stack.is(Items.COPPER_AXE)
+                || stack.is(Items.COPPER_SHOVEL)
+                || stack.is(Items.COPPER_HOE);
+    }
 
-        // 第二点：服务器记录的目标位置
-        points.add(targetPos);
+    /** 从数据组件读取连锁方块列表 */
+    private static List<BlockPos> readToolChainBlocks(ItemStack stack) {
+        String raw = null;
+        if (stack.is(Items.COPPER_PICKAXE))
+            raw = stack.get(ModDataComponents.CHARGED_COPPER_PICKAXE_CHAIN_BLOCKS.get());
+        else if (stack.is(Items.COPPER_AXE))
+            raw = stack.get(ModDataComponents.CHARGED_COPPER_AXE_CHAIN_BLOCKS.get());
+        else if (stack.is(Items.COPPER_SHOVEL))
+            raw = stack.get(ModDataComponents.CHARGED_COPPER_SHOVEL_CHAIN_BLOCKS.get());
+        else if (stack.is(Items.COPPER_HOE))
+            raw = stack.get(ModDataComponents.CHARGED_COPPER_HOE_CHAIN_BLOCKS.get());
 
-        // 搜索所有 LivingEntity（包含已死亡的），排除玩家
-        AABB searchBox = new AABB(targetPos, targetPos).inflate(RANGE);
-        List<LivingEntity> allEntities = mc.level.getEntitiesOfClass(
-                LivingEntity.class, searchBox,
-                e -> e != player // 只排除玩家自己，允许已死亡实体
-        );
-
-        // 贪心最近邻串联
-        Set<LivingEntity> visited = new HashSet<>();
-        Vec3 current = targetPos;
-
-        while (true) {
-            LivingEntity nearest = null;
-            double nearestDist = Double.MAX_VALUE;
-
-            for (LivingEntity e : allEntities) {
-                if (visited.contains(e)) continue;
-                Vec3 ep = e.position().add(0, e.getBbHeight() * 0.5, 0);
-                double d = current.distanceTo(ep);
-                if (d < RANGE && d < nearestDist) {
-                    nearestDist = d;
-                    nearest = e;
-                }
-            }
-
-            if (nearest == null) break;
-
-            visited.add(nearest);
-            Vec3 ep = nearest.position().add(0, nearest.getBbHeight() * 0.5, 0);
-            points.add(ep);
-            current = ep;
+        if (raw == null || raw.isEmpty()) return List.of();
+        List<BlockPos> list = new ArrayList<>();
+        for (String part : raw.split(";")) {
+            String[] xyz = part.split(",");
+            if (xyz.length == 3) try {
+                list.add(new BlockPos(Integer.parseInt(xyz[0]), Integer.parseInt(xyz[1]), Integer.parseInt(xyz[2])));
+            } catch (NumberFormatException ignored) {}
         }
+        return list;
+    }
 
-        return points;
+    /** 闪电宽度倍率（基于蓄电值） */
+    public static float getLightningWidthMultiplier(int charge) {
+        return Math.min(3.0F, 1.0F + charge / 40.0F * 0.8F);
     }
 
     // ════════════════════════════════════════════════════════

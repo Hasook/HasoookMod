@@ -12,9 +12,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.AddValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
@@ -48,6 +50,14 @@ public class ModEnchantments {
     // 飞牌
     public static final ResourceKey<Enchantment> CARD_THROW = ResourceKey.create(Registries.ENCHANTMENT,
             Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "card_throw"));
+
+    // 储电
+    public static final ResourceKey<Enchantment> CHARGE = ResourceKey.create(Registries.ENCHANTMENT,
+            Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "charge"));
+
+    // 铜类附魔标签
+    public static final TagKey<Item> CHARGE_ENCHANTABLE = TagKey.create(Registries.ITEM,
+            Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "charge_enchantable"));
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
         var enchantments = context.lookup(Registries.ENCHANTMENT);
@@ -129,6 +139,14 @@ public class ModEnchantments {
         );
         register(context, CARD_THROW, Enchantment.enchantment(Enchantment.definition(
                         items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
+                        2, 1,
+                        Enchantment.constantCost(20),
+                        Enchantment.constantCost(50),
+                        2,
+                        EquipmentSlotGroup.MAINHAND))
+        );
+        register(context, CHARGE, Enchantment.enchantment(Enchantment.definition(
+                        items.getOrThrow(CHARGE_ENCHANTABLE),
                         2, 1,
                         Enchantment.constantCost(20),
                         Enchantment.constantCost(50),

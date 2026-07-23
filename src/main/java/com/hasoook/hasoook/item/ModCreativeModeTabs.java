@@ -48,11 +48,6 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.ARMOR_STAND_SWORD);
                         output.accept(ModItems.SOCKS);
                         output.accept(ModItems.SOCK);
-                        output.accept(ModItems.CHARGED_COPPER_SWORD);
-                        output.accept(ModItems.CHARGED_COPPER_PICKAXE);
-                        output.accept(ModItems.CHARGED_COPPER_AXE);
-                        output.accept(ModItems.CHARGED_COPPER_HOE);
-                        output.accept(ModItems.CHARGED_COPPER_SHOVEL);
                         output.accept(ModItems.CHARGED_COPPER_HELMET);
                         output.accept(ModItems.CHARGE_BOTTLE);
                         output.accept(ModItems.BOTTLED_LIGHTNING);

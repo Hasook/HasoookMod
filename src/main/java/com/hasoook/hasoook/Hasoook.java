@@ -144,7 +144,6 @@ public class Hasoook {
             event.accept(ModItems.LIGHTNING_SPEAR);
             event.accept(ModItems.SEVOWER);
             event.accept(ModItems.ARMOR_STAND_SWORD);
-            event.accept(ModItems.CHARGED_COPPER_SWORD);
             event.accept(ModItems.CHARGED_COPPER_HELMET);
         }
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
@@ -153,10 +152,6 @@ public class Hasoook {
             event.accept(ModItems.SONIC_BOOM_BOTTLE);
             event.accept(ModItems.BOTTLED_LIGHTNING);
             event.accept(ModItems.CHARGE_BOTTLE);
-            event.accept(ModItems.CHARGED_COPPER_PICKAXE);
-            event.accept(ModItems.CHARGED_COPPER_AXE);
-            event.accept(ModItems.CHARGED_COPPER_HOE);
-            event.accept(ModItems.CHARGED_COPPER_SHOVEL);
             event.accept(ModItems.COPPER_GOLEM_CONTROLLER);
         }
     }

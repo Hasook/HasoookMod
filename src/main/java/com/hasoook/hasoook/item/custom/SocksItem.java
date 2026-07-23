@@ -1,6 +1,7 @@
 package com.hasoook.hasoook.item.custom;
 
 import com.hasoook.hasoook.component.ModDataComponents;
+import com.hasoook.hasoook.item.ModArmorMaterials;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,6 +13,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -34,7 +36,7 @@ public class SocksItem extends Item {
     // 超过 STAGE_5_MAX → 不可名状 (250秒+ ≈ 4分钟)
 
     public SocksItem(Properties properties) {
-        super(properties);
+        super(properties.humanoidArmor(ModArmorMaterials.SOCKS, ArmorType.BOOTS));
     }
 
     /**

@@ -40,7 +40,7 @@ public class PokerItem extends Item {
     private static final String TAG_CHEATING_SUITS = "CheatingSuits";
 
     public PokerItem(Properties properties) {
-        super(properties.stacksTo(1));
+        super(properties.stacksTo(1).durability(54));
     }
 
     @Override

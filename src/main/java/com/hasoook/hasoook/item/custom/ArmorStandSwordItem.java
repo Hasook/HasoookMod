@@ -46,7 +46,7 @@ public class ArmorStandSwordItem extends Item {
     private static final int SLOT_COUNT = 4;
 
     public ArmorStandSwordItem(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     // ═══════════════════════════════════════════════════════════════

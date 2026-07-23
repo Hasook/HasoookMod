@@ -1,12 +1,10 @@
 package com.hasoook.hasoook.event.item;
 
 import com.hasoook.hasoook.Hasoook;
+import com.hasoook.hasoook.component.ModDataComponents;
+import com.hasoook.hasoook.enchantment.ModEnchantmentHelper;
+import com.hasoook.hasoook.enchantment.ModEnchantments;
 import com.hasoook.hasoook.item.ModItems;
-import com.hasoook.hasoook.item.custom.ChargedCopperAxeItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperHoeItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperPickaxeItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperShovelItem;
-import com.hasoook.hasoook.item.custom.ChargedCopperSwordItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +24,9 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
  */
 @EventBusSubscriber(modid = Hasoook.MOD_ID)
 public class ChargedCopperSwordEvent {
+
+    /** 每次雷击增加的蓄电值 */
+    public static final int CHARGE_PER_STRIKE = 10;
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
@@ -61,12 +62,10 @@ public class ChargedCopperSwordEvent {
             int chargedCount = 0;
             for (int slot = 0; slot < chest.getContainerSize(); slot++) {
                 ItemStack stack = chest.getItem(slot);
-                if (ChargedCopperSwordItem.isChargedCopperSword(stack)
-                        || ChargedCopperPickaxeItem.isChargedCopperPickaxe(stack)
-                        || ChargedCopperAxeItem.isChargedCopperAxe(stack)
-                        || ChargedCopperHoeItem.isChargedCopperHoe(stack)
-                        || ChargedCopperShovelItem.isChargedCopperShovel(stack)) {
-                    ChargedCopperSwordItem.addCharge(stack, ChargedCopperSwordItem.CHARGE_PER_STRIKE);
+                if (isChargeEnchantedCopperTool(stack)) {
+                    // 为带有"储电"附魔的原版铜工具充能
+                    int current = stack.getOrDefault(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), 0);
+                    stack.set(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), current + ChargedCopperSwordEvent.CHARGE_PER_STRIKE);
                     chest.setItem(slot, stack);
                     chargedCount++;
                 }
@@ -140,5 +139,15 @@ public class ChargedCopperSwordEvent {
     private static boolean isLightningRod(Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         return state.is(Blocks.LIGHTNING_ROD);
+    }
+
+    /**
+     * 判断物品是否为带有"储电"附魔的铜制物品。
+     * 包括工具和盔甲（头盔、胸甲、护腿、靴子）。
+     */
+    private static boolean isChargeEnchantedCopperTool(ItemStack stack) {
+        // 检查是否有储电附魔（只有 charge_enchantable 标签内的物品才会有此附魔）
+        int level = ModEnchantmentHelper.getEnchantmentLevel(ModEnchantments.CHARGE, stack);
+        return level > 0;
     }
 }

@@ -26,7 +26,7 @@ public class BuildingBlockItem extends BlockItem {
     private static final int MAX_BLOCKS = 16;
 
     public BuildingBlockItem(Block block, Properties properties) {
-        super(block, properties);
+        super(block, properties.useBlockDescriptionPrefix());
     }
 
     @Override
