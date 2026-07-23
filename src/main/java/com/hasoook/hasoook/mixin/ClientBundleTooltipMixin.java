@@ -26,6 +26,7 @@ public class ClientBundleTooltipMixin {
 
     /** EQUIPPABLE 组件 = 装备物品（头盔/胸甲/护腿/靴子/头颅/鞘翅等） */
     private boolean hasoook$isEquipment() {
+        if (this.contents.isEmpty()) return false;
         return this.contents.itemCopyStream()
                 .allMatch(s -> s.get(DataComponents.EQUIPPABLE) != null);
     }

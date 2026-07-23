@@ -1,7 +1,11 @@
 package com.hasoook.hasoook.event.item;
 
 import com.hasoook.hasoook.Hasoook;
+import com.hasoook.hasoook.item.ModItems;
+import com.hasoook.hasoook.item.custom.ChargedCopperAxeItem;
+import com.hasoook.hasoook.item.custom.ChargedCopperHoeItem;
 import com.hasoook.hasoook.item.custom.ChargedCopperPickaxeItem;
+import com.hasoook.hasoook.item.custom.ChargedCopperShovelItem;
 import com.hasoook.hasoook.item.custom.ChargedCopperSwordItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LightningBolt;
@@ -58,14 +62,52 @@ public class ChargedCopperSwordEvent {
             for (int slot = 0; slot < chest.getContainerSize(); slot++) {
                 ItemStack stack = chest.getItem(slot);
                 if (ChargedCopperSwordItem.isChargedCopperSword(stack)
-                        || ChargedCopperPickaxeItem.isChargedCopperPickaxe(stack)) {
+                        || ChargedCopperPickaxeItem.isChargedCopperPickaxe(stack)
+                        || ChargedCopperAxeItem.isChargedCopperAxe(stack)
+                        || ChargedCopperHoeItem.isChargedCopperHoe(stack)
+                        || ChargedCopperShovelItem.isChargedCopperShovel(stack)) {
                     ChargedCopperSwordItem.addCharge(stack, ChargedCopperSwordItem.CHARGE_PER_STRIKE);
                     chest.setItem(slot, stack);
                     chargedCount++;
                 }
             }
 
-            if (chargedCount > 0) {
+            // 储电瓶 → 瓶中闪电转换：每次雷击最多转换16瓶
+            int convertedCount = 0;
+            int maxConvert = 16;
+
+            for (int slot = 0; slot < chest.getContainerSize() && convertedCount < maxConvert; slot++) {
+                ItemStack stack = chest.getItem(slot);
+                if (stack.is(ModItems.CHARGE_BOTTLE.get())) {
+                    int toConvert = Math.min(stack.getCount(), maxConvert - convertedCount);
+                    stack.shrink(toConvert);
+                    chest.setItem(slot, stack);
+                    convertedCount += toConvert;
+
+                    // 创建瓶中闪电
+                    ItemStack lightningStack = new ItemStack(ModItems.BOTTLED_LIGHTNING.get(), toConvert);
+
+                    // 先尝试合并到已有的瓶中闪电堆中
+                    for (int s = 0; s < chest.getContainerSize() && !lightningStack.isEmpty(); s++) {
+                        ItemStack existing = chest.getItem(s);
+                        if (!existing.isEmpty() && existing.is(ModItems.BOTTLED_LIGHTNING.get()) && existing.getCount() < existing.getMaxStackSize()) {
+                            int mergeAmount = Math.min(existing.getMaxStackSize() - existing.getCount(), lightningStack.getCount());
+                            existing.grow(mergeAmount);
+                            lightningStack.shrink(mergeAmount);
+                            chest.setItem(s, existing);
+                        }
+                    }
+                    // 将剩余的放入空槽位
+                    for (int s = 0; s < chest.getContainerSize() && !lightningStack.isEmpty(); s++) {
+                        if (chest.getItem(s).isEmpty()) {
+                            chest.setItem(s, lightningStack.copy());
+                            lightningStack.setCount(0);
+                        }
+                    }
+                }
+            }
+
+            if (chargedCount > 0 || convertedCount > 0) {
                 chest.setChanged(); // 标记方块实体数据已变更，触发保存
                 // 可选：播放粒子效果或音效作为反馈
                 level.levelEvent(3002, belowRodPos, 0); // 箱子开启音效

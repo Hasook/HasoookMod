@@ -2,7 +2,10 @@ package com.hasoook.hasoook.event;
 
 import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.entity.custom.HeavyHalberdProjectile;
+import com.hasoook.hasoook.item.custom.ChargedCopperAxeItem;
+import com.hasoook.hasoook.item.custom.ChargedCopperHoeItem;
 import com.hasoook.hasoook.item.custom.ChargedCopperPickaxeItem;
+import com.hasoook.hasoook.item.custom.ChargedCopperShovelItem;
 import com.hasoook.hasoook.item.custom.ChargedCopperSwordItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -58,8 +61,8 @@ public class LightningLinkRenderer {
         // ── 蓄电铜剑闪电链（串联）──
         renderSwordChains(mc, matrix, consumer, timeSeed, camera);
 
-        // ── 蓄电铜镐闪电链（方块）──
-        renderPickaxeChains(mc, matrix, consumer, timeSeed, camera);
+        // ── 蓄电铜镐/斧/锄/铲闪电链（方块）──
+        renderToolBlockChains(mc, matrix, consumer, timeSeed, camera);
 
         bufferSource.endBatch(RenderTypes.lightning());
         poseStack.popPose();
@@ -183,29 +186,59 @@ public class LightningLinkRenderer {
     }
 
     // ════════════════════════════════════════════════════════
-    // 蓄电铜镐闪电链（从被挖方块到被连锁方块）
+    // 蓄电工具闪电链（方块：镐/斧/锄/铲）
     // ════════════════════════════════════════════════════════
 
-    private static void renderPickaxeChains(Minecraft mc, Matrix4f matrix,
-                                            VertexConsumer consumer, long timeSeed, Camera camera) {
+    private static void renderToolBlockChains(Minecraft mc, Matrix4f matrix,
+                                              VertexConsumer consumer, long timeSeed, Camera camera) {
         List<Player> players = mc.level.getEntitiesOfClass(Player.class,
                 mc.player.getBoundingBox().inflate(SEARCH_RADIUS));
 
         for (Player player : players) {
             ItemStack held = player.getMainHandItem();
-            if (!ChargedCopperPickaxeItem.isChargedCopperPickaxe(held)) continue;
 
-            int chainTicks = ChargedCopperPickaxeItem.getChainTicks(held);
-            if (chainTicks <= 0) continue;
+            // 判断工具类型并获取对应的 chain 数据
+            int chainTicks = 0;
+            int charge = 0;
+            float widthMultiplier = 1.0F;
+            Vec3 origin = null;
+            List<BlockPos> chainBlocks = List.of();
 
-            Vec3 origin = ChargedCopperPickaxeItem.getChainPos(held);
-            if (origin == null) continue;
+            if (ChargedCopperPickaxeItem.isChargedCopperPickaxe(held)) {
+                chainTicks = ChargedCopperPickaxeItem.getChainTicks(held);
+                if (chainTicks > 0) {
+                    origin = ChargedCopperPickaxeItem.getChainPos(held);
+                    charge = ChargedCopperPickaxeItem.getCharge(held);
+                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
+                    chainBlocks = ChargedCopperPickaxeItem.getChainBlocks(held);
+                }
+            } else if (ChargedCopperAxeItem.isChargedCopperAxe(held)) {
+                chainTicks = ChargedCopperAxeItem.getChainTicks(held);
+                if (chainTicks > 0) {
+                    origin = ChargedCopperAxeItem.getChainPos(held);
+                    charge = ChargedCopperAxeItem.getCharge(held);
+                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
+                    chainBlocks = ChargedCopperAxeItem.getChainBlocks(held);
+                }
+            } else if (ChargedCopperHoeItem.isChargedCopperHoe(held)) {
+                chainTicks = ChargedCopperHoeItem.getChainTicks(held);
+                if (chainTicks > 0) {
+                    origin = ChargedCopperHoeItem.getChainPos(held);
+                    charge = ChargedCopperHoeItem.getCharge(held);
+                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
+                    chainBlocks = ChargedCopperHoeItem.getChainBlocks(held);
+                }
+            } else if (ChargedCopperShovelItem.isChargedCopperShovel(held)) {
+                chainTicks = ChargedCopperShovelItem.getChainTicks(held);
+                if (chainTicks > 0) {
+                    origin = ChargedCopperShovelItem.getChainPos(held);
+                    charge = ChargedCopperShovelItem.getCharge(held);
+                    widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
+                    chainBlocks = ChargedCopperShovelItem.getChainBlocks(held);
+                }
+            }
 
-            int charge = ChargedCopperPickaxeItem.getCharge(held);
-            float widthMultiplier = ChargedCopperPickaxeItem.getLightningWidthMultiplier(charge);
-
-            // 读取被连锁的方块位置
-            List<BlockPos> chainBlocks = ChargedCopperPickaxeItem.getChainBlocks(held);
+            if (chainTicks <= 0 || origin == null) continue;
 
             long seedBase = timeSeed + player.getId() * 31L;
             int idx = 0;

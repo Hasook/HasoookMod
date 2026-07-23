@@ -14,6 +14,7 @@ import com.hasoook.hasoook.entity.ModEntities;
 import com.hasoook.hasoook.event.block.BuildingBlockStepEvent;
 import com.hasoook.hasoook.item.ModCreativeModeTabs;
 import com.hasoook.hasoook.item.ModItems;
+import com.hasoook.hasoook.loot.AddItemLootModifier;
 import com.hasoook.hasoook.recipe.ModRecipeSerializers;
 import com.hasoook.hasoook.screen.ModMenuTypes;
 import com.hasoook.hasoook.util.TickScheduler;
@@ -25,10 +26,14 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.MapCodec;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
@@ -49,6 +54,14 @@ public class Hasoook {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    // 全局战利品修改器序列化器
+    private static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> GLM_SERIALIZERS =
+            DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MOD_ID);
+
+    static {
+        GLM_SERIALIZERS.register("add_item", () -> AddItemLootModifier.CODEC);
+    }
+
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public Hasoook(IEventBus modEventBus, ModContainer modContainer) {
@@ -57,6 +70,7 @@ public class Hasoook {
         ModItems.register(modEventBus);
         ModDataComponents.register(modEventBus);
         ModRecipeSerializers.SERIALIZERS.register(modEventBus);
+        GLM_SERIALIZERS.register(modEventBus);
 
         ModEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
@@ -131,12 +145,19 @@ public class Hasoook {
             event.accept(ModItems.SEVOWER);
             event.accept(ModItems.ARMOR_STAND_SWORD);
             event.accept(ModItems.CHARGED_COPPER_SWORD);
+            event.accept(ModItems.CHARGED_COPPER_HELMET);
         }
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(ModItems.RECOVERY_CLOCK);
             event.accept(ModItems.ECHO_BOTTLE);
             event.accept(ModItems.SONIC_BOOM_BOTTLE);
+            event.accept(ModItems.BOTTLED_LIGHTNING);
+            event.accept(ModItems.CHARGE_BOTTLE);
             event.accept(ModItems.CHARGED_COPPER_PICKAXE);
+            event.accept(ModItems.CHARGED_COPPER_AXE);
+            event.accept(ModItems.CHARGED_COPPER_HOE);
+            event.accept(ModItems.CHARGED_COPPER_SHOVEL);
+            event.accept(ModItems.COPPER_GOLEM_CONTROLLER);
         }
     }
 

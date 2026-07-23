@@ -10,6 +10,7 @@ import com.hasoook.hasoook.network.handler.ConsumeDyeHandler;
 import com.hasoook.hasoook.network.handler.DrawSaveMapHandler;
 import com.hasoook.hasoook.network.handler.GiveResultHandler;
 import com.hasoook.hasoook.network.handler.QuestSyncHandler;
+import com.hasoook.hasoook.network.handler.RewindSyncHandler;
 import com.hasoook.hasoook.network.handler.BlackjackSyncHandler;
 import com.hasoook.hasoook.network.handler.DouDiZhuSyncHandler;
 import com.hasoook.hasoook.network.manager.PlayerFpsManager;
@@ -18,6 +19,7 @@ import com.hasoook.hasoook.network.payload.*;
 import com.hasoook.hasoook.screen.custom.BlackjackGameMenu;
 import com.hasoook.hasoook.screen.custom.DouDiZhuGameMenu;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.animal.golem.CopperGolem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -77,6 +79,13 @@ public class ModNetworkInit {
                 QuestSyncPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> {
                     QuestSyncHandler.handle(payload);
+                })
+        );
+        registrar.playToClient(
+                RewindSyncPayload.TYPE,
+                RewindSyncPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    RewindSyncHandler.handle(payload);
                 })
         );
         registrar.playToServer(
@@ -177,6 +186,20 @@ public class ModNetworkInit {
                 (payload, context) -> context.enqueueWork(() -> {
                     DouDiZhuSyncHandler.handle(payload);
                 })
+        );
+        registrar.playToServer(
+                CopperGolemModePayload.TYPE,
+                CopperGolemModePayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getEntity(payload.golemId()) instanceof CopperGolem golem) {
+                            if (payload.mode() == 0 || payload.mode() == 1) {
+                                golem.setData(ModAttachments.COPPER_GOLEM_MODE, payload.mode());
+                            }
+                        }
+                    });
+                }
         );
     }
 }

@@ -75,6 +75,15 @@ public class ModAttachments {
                     .build()
     );
 
+    // 铜傀儡控制器模式 — 0=搬运(默认), 1=农作
+    public static final Supplier<AttachmentType<Integer>> COPPER_GOLEM_MODE = ATTACHMENT_TYPES.register(
+            "copper_golem_mode",
+            () -> AttachmentType.builder(() -> 0)
+                    .serialize(Codec.INT.fieldOf("controller_mode"))
+                    .sync(StreamCodec.of(RegistryFriendlyByteBuf::writeVarInt, RegistryFriendlyByteBuf::readVarInt))
+                    .build()
+    );
+
     // 袜子糊脸数据 — 逗号分隔的 packed int 列表
     // 每个 int: 高16位=贴图索引，低16位=剩余tick；空字符串=无效果
     public static final Supplier<AttachmentType<String>> SOCK_FACE = ATTACHMENT_TYPES.register(

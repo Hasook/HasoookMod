@@ -2,6 +2,8 @@ package com.hasoook.hasoook.item.custom;
 
 import com.hasoook.hasoook.damage.ModDamageSources;
 import com.hasoook.hasoook.effect.ModEffects;
+import com.hasoook.hasoook.network.payload.RewindSyncPayload;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustColorTransitionOptions;
@@ -38,7 +40,20 @@ public class RecoveryClockItem extends Item {
     private static final Map<UUID, TimeData> PLAYER_TIME_DATA = new HashMap<>(); // 玩家时间数据
     private static final int MAX_RECORD_TICKS = 180; // 最大记录时间
 
-    private record SavedPosition(double x, double y, double z, float yRot, float xRot, ResourceKey<Level> dimension) {}
+    /**
+     * 保存的历史位置，包含完整动画状态用于倒放。
+     * <p>
+     * walkAnimPos / walkAnimSpeed — 肢体摆动位置和速度<br>
+     * yBodyRot — 身体朝向（与 yRot 不同，身体会平滑跟随头部）<br>
+     * yHeadRot — 头部朝向
+     */
+    private record SavedPosition(
+            double x, double y, double z,
+            float yRot, float xRot,
+            float walkAnimPos, float walkAnimSpeed,
+            float yBodyRot, float yHeadRot,
+            ResourceKey<Level> dimension
+    ) {}
 
     /**
      * 时间状态数据
@@ -52,6 +67,7 @@ public class RecoveryClockItem extends Item {
 
         UUID boundTarget = null; // 绑定的目标
         final LinkedList<SavedPosition> positions = new LinkedList<>(); // 位置历史记录
+        int lastAfterimageModelValue = -1; // 上次生成残影时的 model 值
     }
 
     public RecoveryClockItem(Properties properties) {
@@ -94,6 +110,9 @@ public class RecoveryClockItem extends Item {
         // 潜行使用，取消回溯记录
         if (player.isShiftKeyDown()) {
             if (data.isRecording) {
+                // 通知客户端清除记录阶段的残影
+                Entity trailEntity = boundEntity != null ? boundEntity : player;
+                sendRewindStop(trailEntity, serverPlayer);
 
                 data.isRecording = false;
                 data.positions.clear();
@@ -125,6 +144,7 @@ public class RecoveryClockItem extends Item {
 
             data.isRecording = true;
             data.skipNext = false;
+            data.lastAfterimageModelValue = -1;
             data.positions.clear();
 
             serverPlayer.level().playSound(null, serverPlayer.blockPosition(),
@@ -132,10 +152,21 @@ public class RecoveryClockItem extends Item {
 
             saveEntityPosition(serverPlayer, data); // 统一用 Entity 的保存方法
 
+            // ★ 立即在原地生成第一个残影
+            data.lastAfterimageModelValue = 0;
+            sendRewindAfterimage(serverPlayer,
+                    serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+                    serverPlayer.getYRot(), serverPlayer.getXRot(),
+                    serverPlayer);
+
             // 如果有绑定目标，则开始回溯目标
         } else if (data.isRecording) {
             data.isRecording = false;
             data.isRewinding = true;
+
+            // 通知客户端启用倒退行走动画
+            Entity startEntity = boundEntity != null ? boundEntity : serverPlayer;
+            sendRewindStart(startEntity, serverPlayer);
 
             serverPlayer.level().playSound(null, serverPlayer.blockPosition(),
                     SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.PLAYERS, 1.0f, 1.0f);
@@ -180,10 +211,23 @@ public class RecoveryClockItem extends Item {
         if (data.isRecording) {
             saveEntityPosition(targetEntity, data);
 
+            // 当时钟贴图改变时（model value 变化），生成残影
+            int afterimageModelValue = Math.min(8, data.positions.size() / 20);
+            if (afterimageModelValue != data.lastAfterimageModelValue && afterimageModelValue > 0) {
+                data.lastAfterimageModelValue = afterimageModelValue;
+                sendRewindAfterimage(targetEntity,
+                        targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(),
+                        targetEntity.getYRot(), targetEntity.getXRot(),
+                        serverPlayer);
+            }
+
             // 达到记录上限自动回溯
             if (data.positions.size() >= MAX_RECORD_TICKS) {
                 data.isRecording = false;
                 data.isRewinding = true;
+
+                // 通知客户端启用倒退行走动画
+                sendRewindStart(targetEntity, serverPlayer);
 
                 serverPlayer.level().playSound(null, serverPlayer.blockPosition(), SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.PLAYERS, 1.0f, 1.0f);
             }
@@ -196,12 +240,18 @@ public class RecoveryClockItem extends Item {
                 SavedPosition pos = data.positions.removeLast();
                 rewindEntity(targetEntity, pos);
 
+                // ★ 每 tick 发送精确动画数据到客户端，实现真正的倒放效果
+                sendRewindTick(targetEntity, pos, serverPlayer);
+
                 float modelValue = (float) Math.min(8, data.positions.size() / 20);
                 updateModel(stack, modelValue, serverPlayer);
 
             } else { // 回溯完成逻辑
                 data.isRewinding = false;
                 data.boundTarget = null;
+
+                // 通知客户端停止回溯动画
+                sendRewindStop(targetEntity, serverPlayer);
 
                 updateModel(stack, 0.0F, serverPlayer);
 
@@ -267,6 +317,13 @@ public class RecoveryClockItem extends Item {
      * 重置状态
      */
     private void resetData(ServerPlayer player, TimeData data, ItemStack stack) {
+        // 如果正在回溯，通知客户端停止动画
+        if (data.isRewinding) {
+            LivingEntity boundEntity = getBoundEntity(player, data);
+            Entity target = boundEntity != null ? boundEntity : player;
+            sendRewindStop(target, player);
+        }
+
         data.isRecording = false;
         data.isRewinding = false;
         data.positions.clear();
@@ -276,24 +333,36 @@ public class RecoveryClockItem extends Item {
     }
 
     /**
-     * 保存当前位置到历史列表
+     * 保存当前位置和完整动画状态到历史列表
      */
-    private void saveEntityPosition(LivingEntity entity, TimeData data) {
+    private static void saveEntityPosition(LivingEntity entity, TimeData data) {
         data.positions.addLast(new SavedPosition(
                 entity.getX(),
                 entity.getY(),
                 entity.getZ(),
                 entity.getYRot(),
                 entity.getXRot(),
+                entity.walkAnimation.position(1.0F),  // 肢体摆动位置
+                entity.walkAnimation.speed(),           // 动画速度
+                entity.yBodyRot,                        // 身体朝向
+                entity.yHeadRot,                        // 头部朝向
                 entity.level().dimension()
         ));
     }
 
     /**
-     * 执行回溯
+     * 执行回溯 —— 应用保存的位置和动画状态（倒放）。
      */
     private void rewindEntity(LivingEntity entity, SavedPosition pos) {
         if (!(entity.level() instanceof ServerLevel currentLevel)) return;
+
+        // ★ 倒放肢体动画：速度取反，位置使用记录值
+        entity.walkAnimation.setSpeed(-pos.walkAnimSpeed());
+        entity.walkAnimation.position(pos.walkAnimPos());
+
+        // ★ 倒放身体和头部朝向
+        entity.yBodyRot = pos.yBodyRot();
+        entity.yHeadRot = pos.yHeadRot();
 
         ServerLevel targetLevel = currentLevel.getServer().getLevel(pos.dimension());
         if (targetLevel == null) targetLevel = currentLevel;
@@ -364,6 +433,11 @@ public class RecoveryClockItem extends Item {
 
         // 如果正在回溯，视为回溯完成
         if (data.isRewinding) {
+            // 通知客户端停止回溯动画
+            if (particleEntity != null) {
+                sendRewindStop(particleEntity, player);
+            }
+
             level.sendParticles(
                     ParticleTypes.SCULK_CHARGE_POP,
                     particleEntity.getX(),
@@ -476,8 +550,87 @@ public class RecoveryClockItem extends Item {
         data.isRecording = true;
         data.isRewinding = false;
         data.skipNext = false;
+        data.lastAfterimageModelValue = -1;
+
+        // 立即保存目标实体的初始位置和动画状态
+        saveEntityPosition(target, data);
+
+        // ★ 立即在目标实体位置生成第一个残影
+        data.lastAfterimageModelValue = 0;
+        sendRewindAfterimage(target,
+                target.getX(), target.getY(), target.getZ(),
+                target.getYRot(), target.getXRot(),
+                player);
 
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.PLAYERS, 1.0f, 1.0f);
+    }
+
+    // ═══════════════════════════════════════════
+    //  网络包发送辅助方法
+    // ═══════════════════════════════════════════
+
+    /**
+     * 发送残影位置数据包到相关客户端（记录阶段）。
+     */
+    private static void sendRewindAfterimage(Entity target, double x, double y, double z,
+                                             float yRot, float xRot, ServerPlayer clockHolder) {
+        RewindSyncPayload payload = RewindSyncPayload.afterimage(target.getUUID(), x, y, z, yRot, xRot);
+        PacketDistributor.sendToPlayersTrackingEntity(target, payload);
+        if (target instanceof ServerPlayer sp) {
+            PacketDistributor.sendToPlayer(sp, payload);
+        }
+        if (clockHolder != target) {
+            PacketDistributor.sendToPlayer(clockHolder, payload);
+        }
+    }
+
+    /**
+     * 发送回溯开始数据包（启用倒退行走动画）。
+     */
+    private static void sendRewindStart(Entity target, ServerPlayer clockHolder) {
+        RewindSyncPayload payload = RewindSyncPayload.rewinding(
+                target.getUUID(), target.getX(), target.getY(), target.getZ(),
+                target.getYRot(), target.getXRot());
+        PacketDistributor.sendToPlayersTrackingEntity(target, payload);
+        if (target instanceof ServerPlayer sp) {
+            PacketDistributor.sendToPlayer(sp, payload);
+        }
+        if (clockHolder != target) {
+            PacketDistributor.sendToPlayer(clockHolder, payload);
+        }
+    }
+
+    /**
+     * 发送回溯 tick 数据包 —— 携带精确动画状态，实现真正倒放。
+     */
+    private static void sendRewindTick(Entity target, SavedPosition pos, ServerPlayer clockHolder) {
+        RewindSyncPayload payload = RewindSyncPayload.rewindTick(
+                target.getUUID(),
+                pos.x(), pos.y(), pos.z(),
+                pos.yRot(), pos.xRot(),
+                pos.walkAnimPos(), pos.walkAnimSpeed(),
+                pos.yBodyRot(), pos.yHeadRot());
+        PacketDistributor.sendToPlayersTrackingEntity(target, payload);
+        if (target instanceof ServerPlayer sp) {
+            PacketDistributor.sendToPlayer(sp, payload);
+        }
+        if (clockHolder != target) {
+            PacketDistributor.sendToPlayer(clockHolder, payload);
+        }
+    }
+
+    /**
+     * 发送停止回溯数据包到相关客户端，清理残影和动画状态。
+     */
+    private static void sendRewindStop(Entity target, ServerPlayer clockHolder) {
+        RewindSyncPayload payload = RewindSyncPayload.stop(target.getUUID());
+        PacketDistributor.sendToPlayersTrackingEntity(target, payload);
+        if (target instanceof ServerPlayer sp) {
+            PacketDistributor.sendToPlayer(sp, payload);
+        }
+        if (clockHolder != target) {
+            PacketDistributor.sendToPlayer(clockHolder, payload);
+        }
     }
 }

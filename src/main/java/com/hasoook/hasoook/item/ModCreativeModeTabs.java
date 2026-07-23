@@ -39,6 +39,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.SEVOWER);
                         output.accept(ModItems.ECHO_ARROW);
                         output.accept(ModItems.RECOVERY_CLOCK);
+                        output.accept(ModItems.ECHO_BOTTLE);
+                        output.accept(ModItems.SONIC_BOOM_BOTTLE);
                         output.accept(ModItems.MAGIC_PAINTBRUSH_AND_PAPER);
                         output.accept(ModItems.HEAVY_HALBERD);
                         output.accept(ModBlocks.PHANTOM_LAMP);
@@ -46,11 +48,17 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.ARMOR_STAND_SWORD);
                         output.accept(ModItems.SOCKS);
                         output.accept(ModItems.SOCK);
-                        output.accept(ModItems.COPPER_GOLEM_BATTLE_CHIP);
                         output.accept(ModItems.CHARGED_COPPER_SWORD);
                         output.accept(ModItems.CHARGED_COPPER_PICKAXE);
+                        output.accept(ModItems.CHARGED_COPPER_AXE);
+                        output.accept(ModItems.CHARGED_COPPER_HOE);
+                        output.accept(ModItems.CHARGED_COPPER_SHOVEL);
+                        output.accept(ModItems.CHARGED_COPPER_HELMET);
+                        output.accept(ModItems.CHARGE_BOTTLE);
+                        output.accept(ModItems.BOTTLED_LIGHTNING);
                         output.accept(ModItems.BUILDING_BLOCK);
                         output.accept(ModItems.POKER);
+                        output.accept(ModItems.COPPER_GOLEM_CONTROLLER);
 
                         // 自定义附魔书
                         var enchantmentLookup = itemDisplayParameters.holders()

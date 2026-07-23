@@ -2,6 +2,7 @@ package com.hasoook.hasoook.recipe;
 
 import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.recipe.custom.BuildingBlockBootsRecipe;
+import com.hasoook.hasoook.recipe.custom.ChargedCopperChargingRecipe;
 import com.hasoook.hasoook.recipe.custom.FireworkRocketSpearRecipe;
 import com.hasoook.hasoook.recipe.custom.PistonSpearRecipe;
 import com.hasoook.hasoook.recipe.custom.SlimeSpearRecipe;
@@ -43,4 +44,7 @@ public class ModRecipeSerializers {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<BuildingBlockBootsRecipe>> BUILDING_BLOCK_BOOTS =
             SERIALIZERS.register("crafting_special_building_block_boots",
                     () -> new CustomRecipe.Serializer<>(BuildingBlockBootsRecipe::new));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ChargedCopperChargingRecipe>> CHARGED_COPPER_CHARGING =
+            SERIALIZERS.register("crafting_special_charged_copper_charging",
+                    () -> new CustomRecipe.Serializer<>(ChargedCopperChargingRecipe::new));
 }

@@ -4,7 +4,6 @@ import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.block.ModBlocks;
 import com.hasoook.hasoook.item.custom.*;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
@@ -64,8 +63,8 @@ public class ModItems {
             properties -> new SocksItem(properties.humanoidArmor(ModArmorMaterials.SOCKS, ArmorType.BOOTS)));
     public static final DeferredItem<Item> SOCK = ITEMS.registerItem("sock",
             ThrowableSockItem::new, Item.Properties::new);
-    public static final DeferredItem<Item> COPPER_GOLEM_BATTLE_CHIP = ITEMS.registerItem("copper_golem_battle_chip",
-            CopperGolemBattleChipItem::new, Item.Properties::new);
+    public static final DeferredItem<Item> COPPER_GOLEM_CONTROLLER = ITEMS.registerItem("copper_golem_controller",
+            CopperGolemControllerItem::new, Item.Properties::new);
     public static final DeferredItem<Item> CHARGED_COPPER_SWORD = ITEMS.registerItem("charged_copper_sword",
             properties -> new ChargedCopperSwordItem(
                     ToolMaterial.COPPER.applySwordProperties(properties, 3.0F, -2.4F)),
@@ -75,6 +74,23 @@ public class ModItems {
                     ToolMaterial.COPPER.applyToolProperties(properties,
                             BlockTags.MINEABLE_WITH_PICKAXE, 1.0F, -2.8F, 0.0F)),
             Item.Properties::new);
+    public static final DeferredItem<Item> CHARGED_COPPER_AXE = ITEMS.registerItem("charged_copper_axe",
+            properties -> new ChargedCopperAxeItem(
+                    ToolMaterial.COPPER.applyToolProperties(properties,
+                            BlockTags.MINEABLE_WITH_AXE, 1.0F, -3.0F, 0.0F)),
+            Item.Properties::new);
+    public static final DeferredItem<Item> CHARGED_COPPER_HOE = ITEMS.registerItem("charged_copper_hoe",
+            properties -> new ChargedCopperHoeItem(
+                    ToolMaterial.COPPER.applyToolProperties(properties,
+                            BlockTags.MINEABLE_WITH_HOE, 1.0F, -2.0F, 0.0F)),
+            Item.Properties::new);
+    public static final DeferredItem<Item> CHARGED_COPPER_SHOVEL = ITEMS.registerItem("charged_copper_shovel",
+            properties -> new ChargedCopperShovelItem(
+                    ToolMaterial.COPPER.applyToolProperties(properties,
+                            BlockTags.MINEABLE_WITH_SHOVEL, 1.0F, -3.0F, 0.0F)),
+            Item.Properties::new);
+    public static final DeferredItem<Item> CHARGED_COPPER_HELMET = ITEMS.registerItem("charged_copper_helmet",
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.CHARGED_COPPER, ArmorType.HELMET)));
     public static final DeferredItem<Item> BUILDING_BLOCK = ITEMS.registerItem("building_block",
             properties -> new BuildingBlockItem(ModBlocks.BUILDING_BLOCK.get(), properties.useBlockDescriptionPrefix()),
             Item.Properties::new);
@@ -82,7 +98,10 @@ public class ModItems {
             properties -> new PokerItem(properties.durability(54)));
     public static final DeferredItem<Item> CARD_PROJECTILE = ITEMS.registerItem("card_projectile",
             Item::new, Item.Properties::new);
-
+    public static final DeferredItem<Item> BOTTLED_LIGHTNING = ITEMS.registerItem("bottled_lightning",
+            BottledLightningItem::new, Item.Properties::new);
+    public static final DeferredItem<Item> CHARGE_BOTTLE = ITEMS.registerItem("charge_bottle",
+            Item::new, Item.Properties::new);
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

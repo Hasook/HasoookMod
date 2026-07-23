@@ -83,6 +83,36 @@ public class ModDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHARGED_COPPER_PICKAXE_TOOL_CHARGE =
             register("charged_copper_pickaxe_tool_charge", builder -> builder.persistent(Codec.INT));
 
+    // ──── 蓄电铜斧 ─────────────────────────────────────
+
+    // 蓄电铜斧链式破坏方块位置列表（分号分隔 "x,y,z;x,y,z;..."）
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> CHARGED_COPPER_AXE_CHAIN_BLOCKS =
+            register("charged_copper_axe_chain_blocks", builder -> builder.persistent(Codec.STRING));
+
+    // 蓄电铜斧当前生效的工具档位
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHARGED_COPPER_AXE_TOOL_CHARGE =
+            register("charged_copper_axe_tool_charge", builder -> builder.persistent(Codec.INT));
+
+    // ──── 蓄电铜锄 ─────────────────────────────────────
+
+    // 蓄电铜锄链式破坏方块位置列表（分号分隔 "x,y,z;x,y,z;..."）
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> CHARGED_COPPER_HOE_CHAIN_BLOCKS =
+            register("charged_copper_hoe_chain_blocks", builder -> builder.persistent(Codec.STRING));
+
+    // 蓄电铜锄当前生效的工具档位
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHARGED_COPPER_HOE_TOOL_CHARGE =
+            register("charged_copper_hoe_tool_charge", builder -> builder.persistent(Codec.INT));
+
+    // ──── 蓄电铜铲 ─────────────────────────────────────
+
+    // 蓄电铜铲链式破坏方块位置列表（分号分隔 "x,y,z;x,y,z;..."）
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> CHARGED_COPPER_SHOVEL_CHAIN_BLOCKS =
+            register("charged_copper_shovel_chain_blocks", builder -> builder.persistent(Codec.STRING));
+
+    // 蓄电铜铲当前生效的工具档位
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHARGED_COPPER_SHOVEL_TOOL_CHARGE =
+            register("charged_copper_shovel_tool_charge", builder -> builder.persistent(Codec.INT));
+
     // 蓄电大招蓄力计数（每 tick +1，释放时清零）
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHARGED_COPPER_CHARGING_POWER =
             register("charged_copper_charging_power", builder -> builder.persistent(Codec.INT));
