@@ -1,6 +1,8 @@
 package com.hasoook.hasoook.mixin;
 
 import com.hasoook.hasoook.component.ModAttachments;
+import com.hasoook.hasoook.duck.CopperArrowCountAccess;
+import com.hasoook.hasoook.duck.EntityIdAccess;
 import com.hasoook.hasoook.duck.HeadRemovedAccess;
 import com.hasoook.hasoook.duck.SockFaceAccess;
 import com.hasoook.hasoook.effect.ModEffects;
@@ -49,6 +51,17 @@ public abstract class LivingEntityRendererMixin {
         if (renderState instanceof SockFaceAccess sockAccess) {
             String sockFaceData = entity.getData(ModAttachments.SOCK_FACE.get());
             sockAccess.hasoook$setSockFaceData(sockFaceData != null ? sockFaceData : "");
+        }
+
+        // 同步铜箭卡身数量 — 用于 StuckCopperArrowLayer / CopperArrowStuckLayer 渲染铜箭贴图
+        if (renderState instanceof CopperArrowCountAccess coppperAccess) {
+            int copperCount = entity.getData(ModAttachments.COPPER_ARROW_COUNT.get());
+            coppperAccess.hasoook$setCopperArrowCount(copperCount);
+        }
+
+        // 同步实体网络 ID — 用于 StuckCopperArrowLayer 生成稳定的随机种子
+        if (renderState instanceof EntityIdAccess idAccess) {
+            idAccess.hasoook$setEntityId(entity.getId());
         }
 
         // 一级伤残：冻结倒下瞬间的朝向，之后不再旋转

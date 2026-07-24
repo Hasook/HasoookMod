@@ -1,8 +1,11 @@
 package com.hasoook.hasoook;
 
 import com.hasoook.hasoook.block.ModBlocks;
+import com.hasoook.hasoook.client.ChargeItemBarRenderer;
 import com.hasoook.hasoook.block.entity.ModBlockEntities;
 import com.hasoook.hasoook.client.renderer.SockFaceLayer;
+import com.hasoook.hasoook.entity.client.CopperArrowStuckLayer;
+import com.hasoook.hasoook.entity.client.StuckCopperArrowLayer;
 import com.hasoook.hasoook.client.renderer.TransplantedHeadLayer;
 import com.hasoook.hasoook.command.ModCommands;
 import com.hasoook.hasoook.command.PaintQuestCommand;
@@ -87,6 +90,8 @@ public class Hasoook {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
+        // Register the charge bar decorator for copper items (client-only MOD bus event)
+        modEventBus.addListener(ChargeItemBarRenderer::register);
         // Register the head transplant render layer on all living entity renderers (client-only event)
         modEventBus.addListener(this::onAddLayers);
         // Register ourselves for server and other game events we are interested in.
@@ -112,6 +117,8 @@ public class Hasoook {
             EntityRenderer<?, ?> entityRenderer = event.getRenderer(entityType);
             if (entityRenderer instanceof LivingEntityRenderer renderer) {
                 renderer.addLayer(new TransplantedHeadLayer(renderer));
+                // 铜箭卡身渲染层（非玩家生物）— 在所有实体模型上渲染铜箭贴图
+                renderer.addLayer(new StuckCopperArrowLayer<>(renderer, event.getContext()));
             }
         }
         // ★ 玩家渲染器（AvatarRenderer）不在 getEntityTypes() 中，需单独处理
@@ -119,6 +126,8 @@ public class Hasoook {
             AvatarRenderer<AbstractClientPlayer> playerRenderer = event.getPlayerRenderer(modelType);
             if (playerRenderer instanceof LivingEntityRenderer renderer) {
                 renderer.addLayer(new TransplantedHeadLayer(renderer));
+                // 铜箭卡身渲染层（玩家）— 使用 StuckInBodyLayer 获得更好的玩家模型效果
+                renderer.addLayer(new CopperArrowStuckLayer<>(renderer, event.getContext()));
             }
             // 袜子糊脸层（仅玩家）
             if (playerRenderer != null) {
@@ -135,6 +144,7 @@ public class Hasoook {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.ECHO_ARROW);
+            event.accept(ModItems.COPPER_ARROW);
             event.accept(ModItems.SLIME_SPEAR);
             event.accept(ModItems.FIREWORK_ROCKET_SPEAR);
             event.accept(ModItems.HEAVY_SPEAR);
@@ -144,7 +154,7 @@ public class Hasoook {
             event.accept(ModItems.LIGHTNING_SPEAR);
             event.accept(ModItems.SEVOWER);
             event.accept(ModItems.ARMOR_STAND_SWORD);
-            event.accept(ModItems.CHARGED_COPPER_HELMET);
+            event.accept(ModItems.COPPER_SHIELD);
         }
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(ModItems.RECOVERY_CLOCK);

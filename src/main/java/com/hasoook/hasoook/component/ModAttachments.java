@@ -75,7 +75,7 @@ public class ModAttachments {
                     .build()
     );
 
-    // 铜傀儡控制器模式 — 0=搬运(默认), 1=农作
+    // 铜傀儡控制器模式 — 0=搬运(默认), 1=农作, 2=按按钮, 3=维护
     public static final Supplier<AttachmentType<Integer>> COPPER_GOLEM_MODE = ATTACHMENT_TYPES.register(
             "copper_golem_mode",
             () -> AttachmentType.builder(() -> 0)
@@ -102,6 +102,15 @@ public class ModAttachments {
             "villager_gamble_stake",
             () -> AttachmentType.builder(() -> 0)
                     .serialize(Codec.INT.fieldOf("gamble_stake"))
+                    .sync(StreamCodec.of(RegistryFriendlyByteBuf::writeVarInt, RegistryFriendlyByteBuf::readVarInt))
+                    .build()
+    );
+
+    // 铜箭卡在身上的数量 — 由 CopperArrowProjectile 射中时设置，客户端用于渲染铜箭贴图
+    public static final Supplier<AttachmentType<Integer>> COPPER_ARROW_COUNT = ATTACHMENT_TYPES.register(
+            "copper_arrow_count",
+            () -> AttachmentType.builder(() -> 0)
+                    .serialize(Codec.INT.fieldOf("copper_arrow_count"))
                     .sync(StreamCodec.of(RegistryFriendlyByteBuf::writeVarInt, RegistryFriendlyByteBuf::readVarInt))
                     .build()
     );

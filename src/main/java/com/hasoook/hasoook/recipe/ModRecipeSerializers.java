@@ -3,6 +3,7 @@ package com.hasoook.hasoook.recipe;
 import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.recipe.custom.BuildingBlockBootsRecipe;
 import com.hasoook.hasoook.recipe.custom.ChargedCopperChargingRecipe;
+import com.hasoook.hasoook.recipe.custom.CopperToolInitialChargeRecipe;
 import com.hasoook.hasoook.recipe.custom.FireworkRocketSpearRecipe;
 import com.hasoook.hasoook.recipe.custom.PistonSpearRecipe;
 import com.hasoook.hasoook.recipe.custom.SlimeSpearRecipe;
@@ -47,4 +48,7 @@ public class ModRecipeSerializers {
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ChargedCopperChargingRecipe>> CHARGED_COPPER_CHARGING =
             SERIALIZERS.register("crafting_special_charged_copper_charging",
                     () -> new CustomRecipe.Serializer<>(ChargedCopperChargingRecipe::new));
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CopperToolInitialChargeRecipe>> COPPER_TOOL_INITIAL_CHARGE =
+            SERIALIZERS.register("crafting_special_copper_tool_initial_charge",
+                    () -> new CustomRecipe.Serializer<>(CopperToolInitialChargeRecipe::new));
 }

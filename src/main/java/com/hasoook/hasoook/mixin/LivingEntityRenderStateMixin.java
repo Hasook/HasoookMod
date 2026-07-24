@@ -1,5 +1,7 @@
 package com.hasoook.hasoook.mixin;
 
+import com.hasoook.hasoook.duck.CopperArrowCountAccess;
+import com.hasoook.hasoook.duck.EntityIdAccess;
 import com.hasoook.hasoook.duck.HeadRemovedAccess;
 import com.hasoook.hasoook.duck.SockFaceAccess;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -8,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(LivingEntityRenderState.class)
-public class LivingEntityRenderStateMixin implements HeadRemovedAccess, SockFaceAccess {
+public class LivingEntityRenderStateMixin implements HeadRemovedAccess, SockFaceAccess, CopperArrowCountAccess, EntityIdAccess {
     @Unique
     private boolean hasoook$headRemoved;
 
@@ -23,6 +25,12 @@ public class LivingEntityRenderStateMixin implements HeadRemovedAccess, SockFace
 
     @Unique
     private String hasoook$sockFaceData = "";
+
+    @Unique
+    private int hasoook$copperArrowCount;
+
+    @Unique
+    private int hasoook$entityId;
 
     @Override
     public boolean hasoook$isHeadRemoved() {
@@ -75,5 +83,25 @@ public class LivingEntityRenderStateMixin implements HeadRemovedAccess, SockFace
     @Override
     public void hasoook$setSockFaceData(String data) {
         this.hasoook$sockFaceData = data;
+    }
+
+    @Override
+    public int hasoook$getCopperArrowCount() {
+        return hasoook$copperArrowCount;
+    }
+
+    @Override
+    public void hasoook$setCopperArrowCount(int count) {
+        this.hasoook$copperArrowCount = count;
+    }
+
+    @Override
+    public int hasoook$getEntityId() {
+        return hasoook$entityId;
+    }
+
+    @Override
+    public void hasoook$setEntityId(int id) {
+        this.hasoook$entityId = id;
     }
 }

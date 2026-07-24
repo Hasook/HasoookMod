@@ -3,11 +3,21 @@ package com.hasoook.hasoook.item;
 import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.block.ModBlocks;
 import com.hasoook.hasoook.item.custom.*;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.component.BlocksAttacks;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.List;
+import java.util.Optional;
 
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Hasoook.MOD_ID);
@@ -41,6 +51,8 @@ public class ModItems {
             RecoveryClockItem::new, Item.Properties::new);
     public static final DeferredItem<Item> ECHO_ARROW = ITEMS.registerItem("echo_arrow",
             EchoArrowItem::new, Item.Properties::new);
+    public static final DeferredItem<Item> COPPER_ARROW = ITEMS.registerItem("copper_arrow",
+            CopperArrowItem::new, Item.Properties::new);
     public static final DeferredItem<Item> ECHO_BOTTLE = ITEMS.registerItem("echo_bottle",
             EchoBottleItem::new, Item.Properties::new);
     public static final DeferredItem<Item> SONIC_BOOM_BOTTLE = ITEMS.registerItem("sonic_boom_bottle",
@@ -63,11 +75,23 @@ public class ModItems {
             BottledLightningItem::new, Item.Properties::new);
 
     // ===== 防具 (Armor) =====
+    public static final DeferredItem<Item> COPPER_SHIELD = ITEMS.registerItem("copper_shield",
+            properties -> new ShieldItem(properties
+                    .durability(256)
+                    .component(DataComponents.BANNER_PATTERNS, BannerPatternLayers.EMPTY)
+                    .repairable(ItemTags.WOODEN_TOOL_MATERIALS)
+                    .equippableUnswappable(EquipmentSlot.OFFHAND)
+                    .component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(
+                            0.25F, 1.0F,
+                            List.of(new BlocksAttacks.DamageReduction(
+                                    90.0F, Optional.empty(), 0.0F, 1.0F)),
+                            new BlocksAttacks.ItemDamageFunction(3.0F, 1.0F, 1.0F),
+                            Optional.of(DamageTypeTags.BYPASSES_SHIELD),
+                            Optional.of(SoundEvents.SHIELD_BLOCK),
+                            Optional.of(SoundEvents.SHIELD_BREAK)))
+                    .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)));
     public static final DeferredItem<Item> SOCKS = ITEMS.registerItem("socks",
             SocksItem::new);
-    public static final DeferredItem<Item> CHARGED_COPPER_HELMET = ITEMS.registerItem("charged_copper_helmet",
-            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.CHARGED_COPPER, ArmorType.HELMET)));
-
     // ===== 方块物品 (Block Items) =====
     public static final DeferredItem<Item> BUILDING_BLOCK = ITEMS.registerItem("building_block",
             properties -> new BuildingBlockItem(ModBlocks.BUILDING_BLOCK.get(), properties),

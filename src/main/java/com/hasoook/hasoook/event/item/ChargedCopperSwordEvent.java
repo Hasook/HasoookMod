@@ -26,7 +26,9 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 public class ChargedCopperSwordEvent {
 
     /** 每次雷击增加的蓄电值 */
-    public static final int CHARGE_PER_STRIKE = 10;
+    public static final int CHARGE_PER_STRIKE = 20;
+    /** 储电上限 */
+    private static final int MAX_CHARGE = 100;
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
@@ -63,9 +65,9 @@ public class ChargedCopperSwordEvent {
             for (int slot = 0; slot < chest.getContainerSize(); slot++) {
                 ItemStack stack = chest.getItem(slot);
                 if (isChargeEnchantedCopperTool(stack)) {
-                    // 为带有"储电"附魔的原版铜工具充能
+                    // 为带有"储电"附魔的原版铜工具充能（不超过上限）
                     int current = stack.getOrDefault(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), 0);
-                    stack.set(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), current + ChargedCopperSwordEvent.CHARGE_PER_STRIKE);
+                    stack.set(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), Math.min(current + CHARGE_PER_STRIKE, MAX_CHARGE));
                     chest.setItem(slot, stack);
                     chargedCount++;
                 }

@@ -38,6 +38,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.END_ROD_SPEAR);
                         output.accept(ModItems.SEVOWER);
                         output.accept(ModItems.ECHO_ARROW);
+                        output.accept(ModItems.COPPER_ARROW);
                         output.accept(ModItems.RECOVERY_CLOCK);
                         output.accept(ModItems.ECHO_BOTTLE);
                         output.accept(ModItems.SONIC_BOOM_BOTTLE);
@@ -48,7 +49,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.ARMOR_STAND_SWORD);
                         output.accept(ModItems.SOCKS);
                         output.accept(ModItems.SOCK);
-                        output.accept(ModItems.CHARGED_COPPER_HELMET);
+                        output.accept(ModItems.COPPER_SHIELD);
                         output.accept(ModItems.CHARGE_BOTTLE);
                         output.accept(ModItems.BOTTLED_LIGHTNING);
                         output.accept(ModItems.BUILDING_BLOCK);
@@ -66,6 +67,7 @@ public class ModCreativeModeTabs {
                         addEnchantedBook(output, enchantmentLookup, ModEnchantments.GIVING, 1);
                         addEnchantedBook(output, enchantmentLookup, ModEnchantments.CHEATING, 1);
                         addEnchantedBook(output, enchantmentLookup, ModEnchantments.CARD_THROW, 1);
+                        addEnchantedBook(output, enchantmentLookup, ModEnchantments.CHARGE, 1);
                     }).build());
 
     /**

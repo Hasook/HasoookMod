@@ -194,7 +194,7 @@ public class ModNetworkInit {
                     context.enqueueWork(() -> {
                         ServerPlayer player = (ServerPlayer) context.player();
                         if (player.level().getEntity(payload.golemId()) instanceof CopperGolem golem) {
-                            if (payload.mode() == 0 || payload.mode() == 1) {
+                            if (payload.mode() >= 0 && payload.mode() <= 3) {
                                 golem.setData(ModAttachments.COPPER_GOLEM_MODE, payload.mode());
                             }
                         }

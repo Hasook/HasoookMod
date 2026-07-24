@@ -4,6 +4,7 @@ import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.entity.custom.AmethystShardProjectile;
 import com.hasoook.hasoook.entity.custom.ArmorStandSwordProjectile;
 import com.hasoook.hasoook.entity.custom.CardProjectile;
+import com.hasoook.hasoook.entity.custom.CopperArrowProjectile;
 import com.hasoook.hasoook.entity.custom.EchoArrowProjectile;
 import com.hasoook.hasoook.entity.custom.HeavyHalberdProjectile;
 import com.hasoook.hasoook.entity.custom.SevowerProjectile;
@@ -28,6 +29,8 @@ public class ModEntities {
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "sevower"));
     public static final ResourceKey<EntityType<?>> HEAVY_HALBERD_KEY =
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "heavy_halberd"));
+    public static final ResourceKey<EntityType<?>> COPPER_ARROW_KEY =
+            ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "copper_arrow"));
     public static final ResourceKey<EntityType<?>> ECHO_ARROW_KEY =
             ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Hasoook.MOD_ID, "echo_arrow"));
     public static final ResourceKey<EntityType<?>> ARMOR_STAND_SWORD_PROJECTILE_KEY =
@@ -43,6 +46,9 @@ public class ModEntities {
     public static final Supplier<EntityType<SevowerProjectile>> SEVOWER =
             ENTITY_TYPES.register("sevower", () -> EntityType.Builder.<SevowerProjectile>of(SevowerProjectile::new, MobCategory.MISC)
                     .sized(0.8f, 0.4f).build(SEVOWER_KEY));
+    public static final Supplier<EntityType<CopperArrowProjectile>> COPPER_ARROW =
+            ENTITY_TYPES.register("copper_arrow", () -> EntityType.Builder.<CopperArrowProjectile>of(CopperArrowProjectile::new, MobCategory.MISC)
+                            .sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build(COPPER_ARROW_KEY));
     public static final Supplier<EntityType<EchoArrowProjectile>> ECHO_ARROW =
             ENTITY_TYPES.register("echo_arrow", () -> EntityType.Builder.<EchoArrowProjectile>of(EchoArrowProjectile::new, MobCategory.MISC)
                             .sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build(ECHO_ARROW_KEY));

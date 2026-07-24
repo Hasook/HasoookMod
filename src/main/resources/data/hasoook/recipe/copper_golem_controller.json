@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "minecraft:copper_ingot",
+    "Y": "minecraft:redstone"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hasoook:copper_golem_controller"
+  }
+}

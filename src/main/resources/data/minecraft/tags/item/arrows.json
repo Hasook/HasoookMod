@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "hasoook:echo_arrow"
+    "hasoook:echo_arrow",
+    "hasoook:copper_arrow"
   ]
 }

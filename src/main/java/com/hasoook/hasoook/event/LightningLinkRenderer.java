@@ -4,6 +4,7 @@ import com.hasoook.hasoook.Hasoook;
 import com.hasoook.hasoook.component.ModDataComponents;
 import com.hasoook.hasoook.enchantment.ModEnchantmentHelper;
 import com.hasoook.hasoook.enchantment.ModEnchantments;
+import com.hasoook.hasoook.item.ModItems;
 import com.hasoook.hasoook.entity.custom.HeavyHalberdProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -116,7 +117,11 @@ public class LightningLinkRenderer {
             if (encoded == null) continue;
             Vec3 targetPos = BlockPos.of(encoded).getCenter();
             int charge = held.getOrDefault(ModDataComponents.CHARGED_COPPER_SWORD_CHARGE.get(), 0);
-            float widthMultiplier = getLightningWidthMultiplier(charge);
+            boolean isShield = held.is(ModItems.COPPER_SHIELD.get());
+            // 盾牌闪电链比剑细，上限更低
+            float widthMultiplier = isShield
+                    ? Math.min(1.4F, getLightningWidthMultiplier(charge))
+                    : getLightningWidthMultiplier(charge);
 
             // ── 计算手部偏移和弧度 ──
             Vec3 eye = player.getEyePosition();
@@ -177,7 +182,8 @@ public class LightningLinkRenderer {
 
     /** 检查物品是否为有储电附魔的铜剑，返回手部信息 */
     private static Optional<HandInfo> findChargeEnchantedSword(ItemStack stack, boolean isMainHand) {
-        if (!stack.is(Items.COPPER_SWORD)) return Optional.empty();
+        // 蓄电铜剑 或 镶铜盾牌
+        if (!stack.is(Items.COPPER_SWORD) && !stack.is(ModItems.COPPER_SHIELD.get())) return Optional.empty();
         if (ModEnchantmentHelper.getEnchantmentLevel(ModEnchantments.CHARGE, stack) <= 0) return Optional.empty();
         return Optional.of(new HandInfo(stack, isMainHand));
     }

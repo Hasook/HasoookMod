@@ -21,6 +21,7 @@
   },
   "client": [
     "AbstractZombieRendererMixin",
+    "ArrowLayerMixin",
     "ClientBundleTooltipMixin",
     "EntityRenderDispatcherAccessor",
     "ItemInHandLayerMixin",
@@ -29,6 +30,7 @@
     "LivingEntityRenderStateMixin",
     "MinecraftMixin",
     "ModelFeatureRendererMixin",
+    "ModelPartAccessor",
     "PlayerModelMixin"
   ]
 }

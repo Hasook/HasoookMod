@@ -7,6 +7,7 @@ import com.hasoook.hasoook.entity.ModEntities;
 import com.hasoook.hasoook.entity.client.AmethystShardProjectileRenderer;
 import com.hasoook.hasoook.entity.client.ArmorStandSwordProjectileRenderer;
 import com.hasoook.hasoook.entity.client.CardProjectileRenderer;
+import com.hasoook.hasoook.entity.client.CopperArrowRenderer;
 import com.hasoook.hasoook.entity.client.EchoArrowRenderer;
 import com.hasoook.hasoook.entity.client.HeavyHalberdProjectileRenderer;
 import com.hasoook.hasoook.entity.client.SevowerProjectileRenderer;
@@ -45,6 +46,7 @@ public class HasoookClient {
     static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntities.AMETHYST_SHARD.get(), AmethystShardProjectileRenderer::new);
         EntityRenderers.register(ModEntities.SEVOWER.get(), SevowerProjectileRenderer::new);
+        EntityRenderers.register(ModEntities.COPPER_ARROW.get(), CopperArrowRenderer::new);
         EntityRenderers.register(ModEntities.ECHO_ARROW.get(), EchoArrowRenderer::new);
         EntityRenderers.register(ModEntities.HEAVY_HALBERD.get(), HeavyHalberdProjectileRenderer::new);
         EntityRenderers.register(ModEntities.ARMOR_STAND_SWORD_PROJECTILE.get(), ArmorStandSwordProjectileRenderer::new);
